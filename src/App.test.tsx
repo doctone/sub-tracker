@@ -16,8 +16,6 @@ describe('App', () => {
 
   it('renders the skeleton placeholder', () => {
     render(<App />)
-    expect(
-      screen.getByText('App skeleton ready for development')
-    ).toBeInTheDocument()
+    expect(screen.getByText('Find my subscriptions')).toBeInTheDocument()
   })
 })
