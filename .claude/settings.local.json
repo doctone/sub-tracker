@@ -1,8 +1,6 @@
 {
   "permissions": {
-    "allow": [
-      "Bash(git checkout:*)"
-    ],
+    "allow": ["Bash(git checkout:*)", "Bash(git add:*)", "Bash(git commit:*)"],
     "deny": []
   }
 }

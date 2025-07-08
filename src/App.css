@@ -64,7 +64,9 @@
   padding: 3px;
   background: linear-gradient(135deg, #667eea, #764ba2, #f093fb, #f5576c);
   background-size: 200% 200%;
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
   mask-composite: subtract;
   animation: ripple 3s ease-in-out infinite;
   opacity: 0;
