@@ -1,4 +1,5 @@
 import './App.css'
+import { GmailAuth } from './components/GmailAuth'
 
 function App() {
   return (
@@ -9,7 +10,7 @@ function App() {
       </header>
       <main className="app-main">
         <div className="hero-section">
-          <button className="discovery-button">Find my subscriptions</button>
+          <GmailAuth />
         </div>
       </main>
     </div>

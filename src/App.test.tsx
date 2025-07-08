@@ -14,8 +14,8 @@ describe('App', () => {
     ).toBeInTheDocument()
   })
 
-  it('renders the skeleton placeholder', () => {
+  it('renders the gmail auth component', () => {
     render(<App />)
-    expect(screen.getByText('Find my subscriptions')).toBeInTheDocument()
+    expect(screen.getByText('Authenticate with Gmail')).toBeInTheDocument()
   })
 })
