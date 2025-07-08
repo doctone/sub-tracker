@@ -8,7 +8,7 @@ interface GmailAuthProps {
 export function GmailAuth({ onClick }: GmailAuthProps) {
   const [isLoading, setIsLoading] = useState(false)
   const { authenticate } = useGmailAuth()
-  
+
   const handleClick = async () => {
     setIsLoading(true)
     try {
@@ -18,7 +18,7 @@ export function GmailAuth({ onClick }: GmailAuthProps) {
       setIsLoading(false)
     }
   }
-  
+
   return (
     <button onClick={handleClick} disabled={isLoading}>
       {isLoading ? 'Authenticating...' : 'Authenticate with Gmail'}

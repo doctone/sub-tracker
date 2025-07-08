@@ -11,9 +11,9 @@ describe('GmailAuth', () => {
   it('calls onClick when button is clicked', async () => {
     const mockOnClick = vi.fn()
     render(<GmailAuth onClick={mockOnClick} />)
-    
+
     fireEvent.click(screen.getByText('Authenticate with Gmail'))
-    
+
     await vi.waitFor(() => {
       expect(mockOnClick).toHaveBeenCalledOnce()
     })
@@ -21,9 +21,9 @@ describe('GmailAuth', () => {
 
   it('shows loading state when authenticating', () => {
     render(<GmailAuth />)
-    
+
     fireEvent.click(screen.getByText('Authenticate with Gmail'))
-    
+
     expect(screen.getByText('Authenticating...')).toBeInTheDocument()
   })
 })
