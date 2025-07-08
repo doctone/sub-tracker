@@ -1,0 +1,39 @@
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.app-header h1 {
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.app-header p {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.app-main {
+  min-height: 400px;
+}
+
+.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  background-color: #f5f5f5;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+}
+
+.placeholder p {
+  color: #888;
+  font-size: 1.1rem;
+}
