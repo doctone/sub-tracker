@@ -8,8 +8,10 @@ function App() {
         <p>Track your subscriptions by analyzing your emails</p>
       </header>
       <main className="app-main">
-        <div className="placeholder">
-          <p>App skeleton ready for development</p>
+        <div className="hero-section">
+          <button className="discovery-button">
+            Find out what my subscriptions are
+          </button>
         </div>
       </main>
     </div>
