@@ -9,9 +9,7 @@ function App() {
       </header>
       <main className="app-main">
         <div className="hero-section">
-          <button className="discovery-button">
-            Find out what my subscriptions are
-          </button>
+          <button className="discovery-button">Find my subscriptions</button>
         </div>
       </main>
     </div>
