@@ -15,11 +15,14 @@ function App() {
       </header>
       <main className="app-main">
         <Routes>
-          <Route path="/" element={
-            <div className="hero-section">
-              <YnabAuth />
-            </div>
-          } />
+          <Route
+            path="/"
+            element={
+              <div className="hero-section">
+                <YnabAuth />
+              </div>
+            }
+          />
           <Route path="/policy" element={<PrivacyPolicy />} />
         </Routes>
       </main>

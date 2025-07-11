@@ -48,7 +48,9 @@ describe('App', () => {
         <App />
       </MemoryRouter>
     )
-    expect(screen.getByRole('heading', { name: 'Privacy Policy' })).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: 'Privacy Policy' })
+    ).toBeInTheDocument()
     expect(screen.getByText('Introduction')).toBeInTheDocument()
   })
 })
