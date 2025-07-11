@@ -24,6 +24,21 @@
   font-size: 1.1rem;
 }
 
+.app-header nav {
+  margin-top: 1rem;
+}
+
+.app-header nav a {
+  color: #553c9a;
+  text-decoration: none;
+  margin: 0 0.5rem;
+  font-weight: 500;
+}
+
+.app-header nav a:hover {
+  text-decoration: underline;
+}
+
 .app-main {
   min-height: 400px;
   display: flex;
@@ -97,4 +112,55 @@
   100% {
     background-position: 0% 50%;
   }
+}
+
+.privacy-policy {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: left;
+}
+
+.privacy-policy .container {
+  line-height: 1.6;
+}
+
+.privacy-policy h1 {
+  color: #333;
+  margin-bottom: 1rem;
+  font-size: 2.5rem;
+  text-align: center;
+}
+
+.privacy-policy h2 {
+  color: #553c9a;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 0.5rem;
+}
+
+.privacy-policy p {
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+.privacy-policy ul {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.privacy-policy li {
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+
+.privacy-policy strong {
+  color: #333;
+}
+
+.privacy-policy section {
+  margin-bottom: 2rem;
 }
