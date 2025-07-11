@@ -2,13 +2,13 @@
 
 ## Project Overview
 
-An application that helps users identify their subscriptions by analyzing emails using an LLM.
+An application that helps users track their subscriptions by connecting directly to YNAB (You Need A Budget) API to analyze transaction data and identify recurring subscription payments.
 
 ## Tech Stack
 
 - **Frontend**: Vite + React
 - **Testing**: Vitest
-- **AI Integration**: AI SDK
+- **API Integration**: YNAB API
 - **TypeScript**: Required for all code
 
 ## Development Principles
@@ -36,19 +36,20 @@ An application that helps users identify their subscriptions by analyzing emails
 - Implement proper error boundaries
 - Use proper loading and error states
 
-### 4. Email Analysis Features
+### 4. YNAB API Integration Features
 
-- Secure handling of email data
+- Secure handling of YNAB OAuth tokens
 - Privacy-first approach - no unnecessary data retention
-- Proper error handling for LLM API calls
-- Rate limiting and retry logic for AI requests
+- Proper error handling for YNAB API calls
+- Rate limiting and retry logic for API requests
+- Respect YNAB API usage limits and best practices
 
 ### 5. Testing Strategy
 
 - Unit tests for utility functions
 - Component tests for React components
-- Integration tests for email processing
-- Mock external APIs (LLM calls)
+- Integration tests for YNAB API processing
+- Mock external APIs (YNAB API calls)
 - Test error scenarios and edge cases
 
 ### 6. Build Process
@@ -77,7 +78,9 @@ Before any commit or deployment:
 
 ## Security Considerations
 
-- Never log sensitive email content
+- Never log sensitive financial data or transaction details
 - Implement proper input validation
-- Use environment variables for API keys
+- Use environment variables for API keys and secrets
 - Sanitize all user inputs before processing
+- Follow YNAB API security best practices
+- Secure storage of OAuth tokens
