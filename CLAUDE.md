@@ -18,7 +18,7 @@ An application that helps users identify their subscriptions by analyzing emails
 - Write tests BEFORE implementing features
 - Follow Red-Green-Refactor cycle
 - Minimum 90% test coverage required
-- Test commands: `npm run test`, `npm run test:watch`, `npm run test:coverage`
+- Test commands: `pnpm run test`, `pnpm run test:watch`, `pnpm run test:coverage`
 
 ### 2. Type Safety
 
@@ -26,11 +26,11 @@ An application that helps users identify their subscriptions by analyzing emails
 - No `any` types allowed without explicit justification
 - Enable strict mode in tsconfig.json
 - Use proper type definitions for all APIs and data structures
-- Type check command: `npm run typecheck`
+- Type check command: `pnpm run typecheck`
 
 ### 3. Code Quality
 
-- Run linting before commits: `npm run lint`
+- Run linting before commits: `pnpm run lint`
 - Use ESLint + Prettier for consistent formatting
 - Follow React best practices and hooks rules
 - Implement proper error boundaries
@@ -53,7 +53,7 @@ An application that helps users identify their subscriptions by analyzing emails
 
 ### 6. Build Process
 
-- Build command: `npm run build`
+- Build command: `pnpm run build`
 - Ensure zero TypeScript errors
 - Verify all tests pass before deployment
 - Check bundle size and performance
@@ -62,10 +62,10 @@ An application that helps users identify their subscriptions by analyzing emails
 
 Before any commit or deployment:
 
-1. `npm run test` - All tests must pass
-2. `npm run typecheck` - Zero TypeScript errors
-3. `npm run lint` - Zero linting errors
-4. `npm run build` - Successful build required
+1. `pnpm run test` - All tests must pass
+2. `pnpm run typecheck` - Zero TypeScript errors
+3. `pnpm run lint` - Zero linting errors
+4. `pnpm run build` - Successful build required
 
 ## Architecture Guidelines
 
