@@ -7,6 +7,7 @@ import {
   useTransactions,
   useDefaultBudget,
   useRecentTransactions,
+  useSubscriptionAnalysis,
 } from '../useYnabQueries'
 import { YnabApiClient } from '../../services/ynabApi'
 
@@ -231,6 +232,214 @@ describe('useYnabQueries', () => {
         expect.stringMatching(/\d{4}-\d{2}-\d{2}/),
         undefined
       )
+    })
+  })
+
+  describe('useSubscriptionAnalysis', () => {
+    it('should analyze transactions for subscription patterns', async () => {
+      const mockTransactions = [
+        {
+          id: '1',
+          payee_name: 'Netflix',
+          amount: -1499, // $14.99
+          date: '2024-01-15',
+          transfer_account_id: null,
+          deleted: false,
+          approved: true,
+          account_name: 'Checking',
+          account_id: 'acc-1',
+          memo: null,
+          cleared: 'cleared',
+          flag_color: null,
+          flag_name: null,
+          payee_id: 'payee-1',
+          category_id: 'cat-1',
+          category_name: 'Entertainment',
+          transfer_transaction_id: null,
+          matched_transaction_id: null,
+          import_id: null,
+          import_payee_name: null,
+          import_payee_name_original: null,
+          debt_transaction_type: null,
+          subtransactions: [],
+        },
+        {
+          id: '2',
+          payee_name: 'Netflix',
+          amount: -1499,
+          date: '2024-02-15',
+          transfer_account_id: null,
+          deleted: false,
+          approved: true,
+          account_name: 'Checking',
+          account_id: 'acc-1',
+          memo: null,
+          cleared: 'cleared',
+          flag_color: null,
+          flag_name: null,
+          payee_id: 'payee-1',
+          category_id: 'cat-1',
+          category_name: 'Entertainment',
+          transfer_transaction_id: null,
+          matched_transaction_id: null,
+          import_id: null,
+          import_payee_name: null,
+          import_payee_name_original: null,
+          debt_transaction_type: null,
+          subtransactions: [],
+        },
+        {
+          id: '3',
+          payee_name: 'Netflix',
+          amount: -1499,
+          date: '2024-03-15',
+          transfer_account_id: null,
+          deleted: false,
+          approved: true,
+          account_name: 'Checking',
+          account_id: 'acc-1',
+          memo: null,
+          cleared: 'cleared',
+          flag_color: null,
+          flag_name: null,
+          payee_id: 'payee-1',
+          category_id: 'cat-1',
+          category_name: 'Entertainment',
+          transfer_transaction_id: null,
+          matched_transaction_id: null,
+          import_id: null,
+          import_payee_name: null,
+          import_payee_name_original: null,
+          debt_transaction_type: null,
+          subtransactions: [],
+        },
+      ]
+
+      const mockGetTransactions = vi.fn().mockResolvedValue({
+        transactions: mockTransactions,
+      })
+      mockYnabApiClient.mockImplementation(
+        () =>
+          ({
+            getTransactions: mockGetTransactions,
+          }) as unknown as YnabApiClient
+      )
+
+      const { result } = renderHook(
+        () => useSubscriptionAnalysis('test-token', 'budget-1', 12),
+        { wrapper: createWrapper() }
+      )
+
+      await waitFor(() => {
+        expect(result.current.isSuccess).toBe(true)
+      })
+
+      expect(result.current.data).toHaveLength(1)
+      expect(result.current.data![0].payeeName).toBe('Netflix')
+      expect(result.current.data![0].frequency).toBe('monthly')
+      expect(result.current.data![0].averageAmount).toBe(1499)
+    })
+
+    it('should filter out transfers and income', async () => {
+      const mockTransactions = [
+        {
+          id: '1',
+          payee_name: 'Netflix',
+          amount: -1499,
+          date: '2024-01-15',
+          transfer_account_id: null,
+          deleted: false,
+          approved: true,
+          account_name: 'Checking',
+          account_id: 'acc-1',
+          memo: null,
+          cleared: 'cleared',
+          flag_color: null,
+          flag_name: null,
+          payee_id: 'payee-1',
+          category_id: 'cat-1',
+          category_name: 'Entertainment',
+          transfer_transaction_id: null,
+          matched_transaction_id: null,
+          import_id: null,
+          import_payee_name: null,
+          import_payee_name_original: null,
+          debt_transaction_type: null,
+          subtransactions: [],
+        },
+        {
+          id: '2',
+          payee_name: 'Transfer',
+          amount: -1000,
+          date: '2024-01-16',
+          transfer_account_id: 'other-account',
+          deleted: false,
+          approved: true,
+          account_name: 'Checking',
+          account_id: 'acc-1',
+          memo: null,
+          cleared: 'cleared',
+          flag_color: null,
+          flag_name: null,
+          payee_id: 'payee-2',
+          category_id: null,
+          category_name: null,
+          transfer_transaction_id: null,
+          matched_transaction_id: null,
+          import_id: null,
+          import_payee_name: null,
+          import_payee_name_original: null,
+          debt_transaction_type: null,
+          subtransactions: [],
+        },
+        {
+          id: '3',
+          payee_name: 'Salary',
+          amount: 500000, // Income
+          date: '2024-01-01',
+          transfer_account_id: null,
+          deleted: false,
+          approved: true,
+          account_name: 'Checking',
+          account_id: 'acc-1',
+          memo: null,
+          cleared: 'cleared',
+          flag_color: null,
+          flag_name: null,
+          payee_id: 'payee-3',
+          category_id: 'cat-2',
+          category_name: 'Income',
+          transfer_transaction_id: null,
+          matched_transaction_id: null,
+          import_id: null,
+          import_payee_name: null,
+          import_payee_name_original: null,
+          debt_transaction_type: null,
+          subtransactions: [],
+        },
+      ]
+
+      const mockGetTransactions = vi.fn().mockResolvedValue({
+        transactions: mockTransactions,
+      })
+      mockYnabApiClient.mockImplementation(
+        () =>
+          ({
+            getTransactions: mockGetTransactions,
+          }) as unknown as YnabApiClient
+      )
+
+      const { result } = renderHook(
+        () => useSubscriptionAnalysis('test-token', 'budget-1'),
+        { wrapper: createWrapper() }
+      )
+
+      await waitFor(() => {
+        expect(result.current.isSuccess).toBe(true)
+      })
+
+      // Should return empty array since Netflix only has 1 transaction after filtering
+      expect(result.current.data).toEqual([])
     })
   })
 })

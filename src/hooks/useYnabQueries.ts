@@ -1,5 +1,9 @@
 import { useQuery, type UseQueryResult } from '@tanstack/react-query'
 import { YnabApiClient } from '../services/ynabApi'
+import {
+  analyzeSubscriptions,
+  type SubscriptionPattern,
+} from '../utils/subscriptionAnalysis'
 import type {
   YnabBudgetsResponse,
   YnabTransactionsResponse,
@@ -101,4 +105,42 @@ export function useRecentTransactions(
   const sinceDateStr = sinceDate.toISOString().split('T')[0]
 
   return useTransactions(accessToken, budgetId, sinceDateStr)
+}
+
+export function useSubscriptionAnalysis(
+  accessToken: string | null,
+  budgetId: string | null,
+  monthsBack: number = 12
+): UseQueryResult<SubscriptionPattern[], Error> {
+  return useQuery({
+    queryKey: ['ynab', 'subscriptions', budgetId, monthsBack],
+    queryFn: async () => {
+      if (!accessToken || !budgetId) {
+        throw new Error('Access token and budget ID are required')
+      }
+
+      const sinceDate = new Date()
+      sinceDate.setMonth(sinceDate.getMonth() - monthsBack)
+      const sinceDateStr = sinceDate.toISOString().split('T')[0]
+
+      const client = new YnabApiClient(accessToken)
+      const response: YnabTransactionsResponse = await client.getTransactions(
+        budgetId,
+        sinceDateStr
+      )
+
+      // Filter out transfers and positive amounts (income)
+      const filteredTransactions = response.transactions.filter(
+        (transaction) =>
+          transaction.amount < 0 && // Only expenses
+          !transaction.transfer_account_id && // Exclude transfers
+          !transaction.deleted && // Exclude deleted transactions
+          transaction.approved // Only approved transactions
+      )
+
+      return analyzeSubscriptions(filteredTransactions)
+    },
+    enabled: !!accessToken && !!budgetId,
+    staleTime: 5 * 60 * 1000, // 5 minutes - subscription analysis is computationally heavy
+  })
 }
