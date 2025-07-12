@@ -1,59 +1,65 @@
-import type { YnabTransaction } from '../types/ynab';
+import type { YnabTransaction } from '../types/ynab'
 
 export interface SubscriptionPattern {
-  payeeName: string;
-  amounts: number[];
-  dates: string[];
-  averageAmount: number;
-  frequency: 'monthly' | 'weekly' | 'yearly' | 'unknown';
-  confidence: number;
-  lastTransactionDate: string;
-  accountNames: string[];
+  payeeName: string
+  amounts: number[]
+  dates: string[]
+  averageAmount: number
+  frequency: 'monthly' | 'weekly' | 'yearly' | 'unknown'
+  confidence: number
+  lastTransactionDate: string
+  accountNames: string[]
 }
 
-export function analyzeSubscriptions(transactions: YnabTransaction[]): SubscriptionPattern[] {
+export function analyzeSubscriptions(
+  transactions: YnabTransaction[]
+): SubscriptionPattern[] {
   // Group transactions by payee
-  const payeeGroups = new Map<string, YnabTransaction[]>();
-  
-  transactions.forEach(transaction => {
-    const payeeName = transaction.payee_name || 'Unknown';
-    if (!payeeGroups.has(payeeName)) {
-      payeeGroups.set(payeeName, []);
-    }
-    payeeGroups.get(payeeName)!.push(transaction);
-  });
+  const payeeGroups = new Map<string, YnabTransaction[]>()
 
-  const subscriptionPatterns: SubscriptionPattern[] = [];
+  transactions.forEach((transaction) => {
+    const payeeName = transaction.payee_name || 'Unknown'
+    if (!payeeGroups.has(payeeName)) {
+      payeeGroups.set(payeeName, [])
+    }
+    payeeGroups.get(payeeName)!.push(transaction)
+  })
+
+  const subscriptionPatterns: SubscriptionPattern[] = []
 
   // Analyze each payee for recurring patterns
   payeeGroups.forEach((payeeTransactions, payeeName) => {
     // Only consider payees with multiple transactions
-    if (payeeTransactions.length < 2) return;
+    if (payeeTransactions.length < 2) return
 
     // Sort transactions by date
-    const sortedTransactions = payeeTransactions.sort((a, b) => 
-      new Date(a.date).getTime() - new Date(b.date).getTime()
-    );
+    const sortedTransactions = payeeTransactions.sort(
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+    )
 
     // Calculate intervals between transactions
-    const intervals: number[] = [];
+    const intervals: number[] = []
     for (let i = 1; i < sortedTransactions.length; i++) {
-      const prevDate = new Date(sortedTransactions[i - 1].date);
-      const currentDate = new Date(sortedTransactions[i].date);
-      const intervalDays = (currentDate.getTime() - prevDate.getTime()) / (1000 * 60 * 60 * 24);
-      intervals.push(intervalDays);
+      const prevDate = new Date(sortedTransactions[i - 1].date)
+      const currentDate = new Date(sortedTransactions[i].date)
+      const intervalDays =
+        (currentDate.getTime() - prevDate.getTime()) / (1000 * 60 * 60 * 24)
+      intervals.push(intervalDays)
     }
 
     // Determine frequency pattern
-    const frequency = determineFrequency(intervals);
-    const confidence = calculateConfidence(intervals, sortedTransactions.length);
+    const frequency = determineFrequency(intervals)
+    const confidence = calculateConfidence(intervals, sortedTransactions.length)
 
     // Only include patterns with reasonable confidence (at least 3 transactions)
     if (confidence > 0.5 && sortedTransactions.length >= 3) {
-      const amounts = sortedTransactions.map(t => Math.abs(t.amount));
-      const averageAmount = amounts.reduce((sum, amount) => sum + amount, 0) / amounts.length;
-      const dates = sortedTransactions.map(t => t.date);
-      const accountNames = [...new Set(sortedTransactions.map(t => t.account_name))];
+      const amounts = sortedTransactions.map((t) => Math.abs(t.amount))
+      const averageAmount =
+        amounts.reduce((sum, amount) => sum + amount, 0) / amounts.length
+      const dates = sortedTransactions.map((t) => t.date)
+      const accountNames = [
+        ...new Set(sortedTransactions.map((t) => t.account_name)),
+      ]
 
       subscriptionPatterns.push({
         payeeName,
@@ -64,82 +70,95 @@ export function analyzeSubscriptions(transactions: YnabTransaction[]): Subscript
         confidence,
         lastTransactionDate: dates[dates.length - 1],
         accountNames,
-      });
+      })
     }
-  });
+  })
 
   // Sort by confidence and average amount
   return subscriptionPatterns.sort((a, b) => {
     if (b.confidence !== a.confidence) {
-      return b.confidence - a.confidence;
+      return b.confidence - a.confidence
     }
-    return b.averageAmount - a.averageAmount;
-  });
+    return b.averageAmount - a.averageAmount
+  })
 }
 
-function determineFrequency(intervals: number[]): 'monthly' | 'weekly' | 'yearly' | 'unknown' {
-  if (intervals.length === 0) return 'unknown';
+function determineFrequency(
+  intervals: number[]
+): 'monthly' | 'weekly' | 'yearly' | 'unknown' {
+  if (intervals.length === 0) return 'unknown'
 
-  const avgInterval = intervals.reduce((sum, interval) => sum + interval, 0) / intervals.length;
-  
+  const avgInterval =
+    intervals.reduce((sum, interval) => sum + interval, 0) / intervals.length
+
   // Weekly: 7 days ± 3 days
   if (avgInterval >= 4 && avgInterval <= 10) {
-    return 'weekly';
+    return 'weekly'
   }
-  
+
   // Monthly: 30 days ± 7 days
   if (avgInterval >= 23 && avgInterval <= 37) {
-    return 'monthly';
+    return 'monthly'
   }
-  
+
   // Yearly: 365 days ± 30 days
   if (avgInterval >= 335 && avgInterval <= 395) {
-    return 'yearly';
+    return 'yearly'
   }
-  
-  return 'unknown';
+
+  return 'unknown'
 }
 
-function calculateConfidence(intervals: number[], transactionCount: number): number {
-  if (intervals.length === 0) return 0;
+function calculateConfidence(
+  intervals: number[],
+  transactionCount: number
+): number {
+  if (intervals.length === 0) return 0
 
   // Calculate variance in intervals
-  const avgInterval = intervals.reduce((sum, interval) => sum + interval, 0) / intervals.length;
-  const variance = intervals.reduce((sum, interval) => sum + Math.pow(interval - avgInterval, 2), 0) / intervals.length;
-  const standardDeviation = Math.sqrt(variance);
-  
+  const avgInterval =
+    intervals.reduce((sum, interval) => sum + interval, 0) / intervals.length
+  const variance =
+    intervals.reduce(
+      (sum, interval) => sum + Math.pow(interval - avgInterval, 2),
+      0
+    ) / intervals.length
+  const standardDeviation = Math.sqrt(variance)
+
   // Lower standard deviation = higher confidence
-  const consistencyScore = Math.max(0, 1 - (standardDeviation / avgInterval));
-  
+  const consistencyScore = Math.max(0, 1 - standardDeviation / avgInterval)
+
   // More transactions = higher confidence
-  const volumeScore = Math.min(1, transactionCount / 12); // Cap at 12 transactions
-  
-  return (consistencyScore * 0.7) + (volumeScore * 0.3);
+  const volumeScore = Math.min(1, transactionCount / 12) // Cap at 12 transactions
+
+  return consistencyScore * 0.7 + volumeScore * 0.3
 }
 
 export function formatCurrency(amount: number, currencySymbol: string): string {
-  return `${currencySymbol}${(amount / 1000).toFixed(2)}`;
+  return `${currencySymbol}${(amount / 1000).toFixed(2)}`
 }
 
-export function getNextExpectedDate(pattern: SubscriptionPattern): string | null {
-  if (pattern.frequency === 'unknown' || pattern.dates.length === 0) return null;
+export function getNextExpectedDate(
+  pattern: SubscriptionPattern
+): string | null {
+  if (pattern.frequency === 'unknown' || pattern.dates.length === 0) return null
 
-  const lastDate = new Date(pattern.lastTransactionDate);
-  const nextDate = new Date(lastDate);
+  const lastDate = new Date(pattern.lastTransactionDate)
+  const nextDate = new Date(lastDate)
 
   switch (pattern.frequency) {
     case 'weekly':
-      nextDate.setDate(lastDate.getDate() + 7);
-      break;
+      nextDate.setDate(lastDate.getDate() + 7)
+      break
     case 'monthly':
-      nextDate.setMonth(lastDate.getMonth() + 1);
-      break;
+      nextDate.setMonth(lastDate.getMonth() + 1)
+      break
     case 'yearly':
-      nextDate.setFullYear(lastDate.getFullYear() + 1);
-      break;
+      nextDate.setFullYear(lastDate.getFullYear() + 1)
+      break
     default:
-      return null;
+      return null
   }
 
-  return nextDate.toISOString().split('T')[0];
+  return nextDate.toISOString().split('T')[0]
 }

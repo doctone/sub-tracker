@@ -56,9 +56,12 @@ describe('useYnabQueries', () => {
         },
       ]
       const mockGetBudgets = vi.fn().mockResolvedValue({ budgets: mockBudgets })
-      mockYnabApiClient.mockImplementation(() => ({
-        getBudgets: mockGetBudgets,
-      }) as unknown as YnabApiClient)
+      mockYnabApiClient.mockImplementation(
+        () =>
+          ({
+            getBudgets: mockGetBudgets,
+          }) as unknown as YnabApiClient
+      )
 
       const { result } = renderHook(() => useBudgets('test-token'), {
         wrapper: createWrapper(),
@@ -83,9 +86,12 @@ describe('useYnabQueries', () => {
 
     it('should handle errors', async () => {
       const mockGetBudgets = vi.fn().mockRejectedValue(new Error('API Error'))
-      mockYnabApiClient.mockImplementation(() => ({
-        getBudgets: mockGetBudgets,
-      }) as unknown as YnabApiClient)
+      mockYnabApiClient.mockImplementation(
+        () =>
+          ({
+            getBudgets: mockGetBudgets,
+          }) as unknown as YnabApiClient
+      )
 
       const { result } = renderHook(() => useBudgets('test-token'), {
         wrapper: createWrapper(),
@@ -105,12 +111,15 @@ describe('useYnabQueries', () => {
       const mockTransactions = [
         { id: '1', payee_name: 'Test Payee', amount: 1000, date: '2023-01-01' },
       ]
-      const mockGetTransactions = vi.fn().mockResolvedValue({ 
-        transactions: mockTransactions 
+      const mockGetTransactions = vi.fn().mockResolvedValue({
+        transactions: mockTransactions,
       })
-      mockYnabApiClient.mockImplementation(() => ({
-        getTransactions: mockGetTransactions,
-      }) as unknown as YnabApiClient)
+      mockYnabApiClient.mockImplementation(
+        () =>
+          ({
+            getTransactions: mockGetTransactions,
+          }) as unknown as YnabApiClient
+      )
 
       const { result } = renderHook(
         () => useTransactions('test-token', 'budget-1', '2023-01-01'),
@@ -122,14 +131,17 @@ describe('useYnabQueries', () => {
       })
 
       expect(result.current.data).toEqual(mockTransactions)
-      expect(mockGetTransactions).toHaveBeenCalledWith('budget-1', '2023-01-01', undefined)
+      expect(mockGetTransactions).toHaveBeenCalledWith(
+        'budget-1',
+        '2023-01-01',
+        undefined
+      )
     })
 
     it('should not fetch when required params are missing', () => {
-      const { result } = renderHook(
-        () => useTransactions('test-token', null),
-        { wrapper: createWrapper() }
-      )
+      const { result } = renderHook(() => useTransactions('test-token', null), {
+        wrapper: createWrapper(),
+      })
 
       expect(result.current.data).toBeUndefined()
       expect(result.current.isLoading).toBe(false)
@@ -194,12 +206,15 @@ describe('useYnabQueries', () => {
       const mockTransactions = [
         { id: '1', payee_name: 'Test Payee', amount: 1000, date: '2023-01-01' },
       ]
-      const mockGetTransactions = vi.fn().mockResolvedValue({ 
-        transactions: mockTransactions 
+      const mockGetTransactions = vi.fn().mockResolvedValue({
+        transactions: mockTransactions,
       })
-      mockYnabApiClient.mockImplementation(() => ({
-        getTransactions: mockGetTransactions,
-      }) as unknown as YnabApiClient)
+      mockYnabApiClient.mockImplementation(
+        () =>
+          ({
+            getTransactions: mockGetTransactions,
+          }) as unknown as YnabApiClient
+      )
 
       const { result } = renderHook(
         () => useRecentTransactions('test-token', 'budget-1', 6),

@@ -17,15 +17,12 @@ export class YnabApiClient {
     return this.requestWithRetry<T>(endpoint)
   }
 
-  private async requestWithRetry<T>(
-    endpoint: string,
-    retries = 3
-  ): Promise<T> {
+  private async requestWithRetry<T>(endpoint: string, retries = 3): Promise<T> {
     const now = Date.now()
     const timeSinceLastRequest = now - this.lastRequestTime
 
     if (timeSinceLastRequest < this.minRequestInterval) {
-      await new Promise(resolve =>
+      await new Promise((resolve) =>
         setTimeout(resolve, this.minRequestInterval - timeSinceLastRequest)
       )
     }
@@ -50,8 +47,12 @@ export class YnabApiClient {
       const data = await response.json()
       return data.data
     } catch (error) {
-      if (retries > 0 && error instanceof Error && !error.message.includes('401')) {
-        await new Promise(resolve => setTimeout(resolve, 1000))
+      if (
+        retries > 0 &&
+        error instanceof Error &&
+        !error.message.includes('401')
+      ) {
+        await new Promise((resolve) => setTimeout(resolve, 1000))
         return this.requestWithRetry<T>(endpoint, retries - 1)
       }
       throw error
