@@ -1,75 +1,47 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useYnabAuth } from '../hooks/useYnabAuth';
-import { YnabApiClient } from '../services/ynabApi';
-import type { YnabBudget, YnabTransaction } from '../types/ynab';
+import { useState, useEffect } from 'react'
+import { useYnabAuth } from '../hooks/useYnabAuth'
+import {
+  useBudgets,
+  useDefaultBudget,
+  useRecentTransactions,
+} from '../hooks/useYnabQueries'
+import type { YnabBudget } from '../types/ynab'
 
 export function YnabDashboard() {
-  const { isAuthenticated, accessToken, logout } = useYnabAuth();
-  const [budgets, setBudgets] = useState<YnabBudget[]>([]);
-  const [selectedBudget, setSelectedBudget] = useState<YnabBudget | null>(null);
-  const [transactions, setTransactions] = useState<YnabTransaction[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { isAuthenticated, accessToken, logout } = useYnabAuth()
+  const [selectedBudget, setSelectedBudget] = useState<YnabBudget | null>(null)
 
-  const apiClient = accessToken ? new YnabApiClient(accessToken) : null;
+  // Use TanStack Query hooks
+  const {
+    data: budgets = [],
+    isLoading: budgetsLoading,
+    error: budgetsError,
+  } = useBudgets(accessToken)
 
-  const fetchBudgets = useCallback(async () => {
-    if (!apiClient) return;
-    
-    setLoading(true);
-    setError(null);
-    
-    try {
-      const response = await apiClient.getBudgets();
-      setBudgets(response.budgets);
-      
-      // Auto-select the default budget if available
-      if (response.default_budget) {
-        setSelectedBudget(response.default_budget);
-      } else if (response.budgets.length > 0) {
-        setSelectedBudget(response.budgets[0]);
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch budgets');
-    } finally {
-      setLoading(false);
-    }
-  }, [apiClient]);
+  const defaultBudget = useDefaultBudget(budgets)
 
+  const {
+    data: transactions = [],
+    isLoading: transactionsLoading,
+    error: transactionsError,
+  } = useRecentTransactions(accessToken, selectedBudget?.id || null)
+
+  // Auto-select the default budget when budgets are loaded
   useEffect(() => {
-    if (isAuthenticated && apiClient) {
-      fetchBudgets();
+    if (defaultBudget && !selectedBudget) {
+      setSelectedBudget(defaultBudget)
     }
-  }, [isAuthenticated, apiClient, fetchBudgets]);
-
-  const fetchTransactions = async (budgetId: string) => {
-    if (!apiClient) return;
-    
-    setLoading(true);
-    setError(null);
-    
-    try {
-      // Get transactions from the last 12 months
-      const sinceDate = new Date();
-      sinceDate.setMonth(sinceDate.getMonth() - 12);
-      const sinceDateStr = sinceDate.toISOString().split('T')[0];
-      
-      const response = await apiClient.getTransactions(budgetId, sinceDateStr);
-      setTransactions(response.transactions);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch transactions');
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [defaultBudget, selectedBudget])
 
   const handleBudgetSelect = (budget: YnabBudget) => {
-    setSelectedBudget(budget);
-    fetchTransactions(budget.id);
-  };
+    setSelectedBudget(budget)
+  }
+
+  const loading = budgetsLoading || transactionsLoading
+  const error = budgetsError?.message || transactionsError?.message
 
   if (!isAuthenticated) {
-    return null;
+    return null
   }
 
   return (
@@ -91,12 +63,12 @@ export function YnabDashboard() {
           <select
             value={selectedBudget?.id || ''}
             onChange={(e) => {
-              const budget = budgets.find(b => b.id === e.target.value);
-              if (budget) handleBudgetSelect(budget);
+              const budget = budgets.find((b) => b.id === e.target.value)
+              if (budget) handleBudgetSelect(budget)
             }}
           >
             <option value="">Choose a budget...</option>
-            {budgets.map(budget => (
+            {budgets.map((budget) => (
               <option key={budget.id} value={budget.id}>
                 {budget.name}
               </option>
@@ -109,16 +81,18 @@ export function YnabDashboard() {
         <div className="budget-info">
           <h3>Budget: {selectedBudget.name}</h3>
           <p>Currency: {selectedBudget.currency_format.iso_code}</p>
-          <p>Accounts: {selectedBudget.accounts.length}</p>
-          
+          <p>Accounts: {selectedBudget.accounts?.length}</p>
+
           {transactions.length > 0 && (
             <div className="transactions-summary">
               <h4>Recent Transactions: {transactions.length}</h4>
               <div className="transaction-list">
-                {transactions.slice(0, 10).map(transaction => (
+                {transactions.slice(0, 10).map((transaction) => (
                   <div key={transaction.id} className="transaction-item">
                     <span className="date">{transaction.date}</span>
-                    <span className="payee">{transaction.payee_name || 'Unknown'}</span>
+                    <span className="payee">
+                      {transaction.payee_name || 'Unknown'}
+                    </span>
                     <span className="amount">
                       {selectedBudget.currency_format.currency_symbol}
                       {(transaction.amount / 1000).toFixed(2)}
@@ -132,5 +106,5 @@ export function YnabDashboard() {
         </div>
       )}
     </div>
-  );
+  )
 }
