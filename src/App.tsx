@@ -1,9 +1,13 @@
 import './App.css'
 import { YnabAuth } from './components/YnabAuth'
+import { YnabDashboard } from './components/YnabDashboard'
 import { PrivacyPolicy } from './components/PrivacyPolicy'
+import { useYnabAuth } from './hooks/useYnabAuth'
 import { Routes, Route, Link } from 'react-router-dom'
 
 function App() {
+  const { isAuthenticated } = useYnabAuth()
+
   return (
     <div className="app">
       <header className="app-header">
@@ -19,7 +23,7 @@ function App() {
             path="/"
             element={
               <div className="hero-section">
-                <YnabAuth />
+                {isAuthenticated ? <YnabDashboard /> : <YnabAuth />}
               </div>
             }
           />

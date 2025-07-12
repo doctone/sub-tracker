@@ -10,4 +10,14 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './src/test/setup.ts',
   },
+  server: {
+    proxy: {
+      '/api/ynab': {
+        target: 'https://api.ynab.com/v1',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/ynab/, ''),
+        secure: true,
+      },
+    },
+  },
 })
