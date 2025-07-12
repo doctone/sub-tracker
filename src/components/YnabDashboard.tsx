@@ -4,8 +4,10 @@ import {
   useBudgets,
   useDefaultBudget,
   useRecentTransactions,
+  useSubscriptionAnalysis,
 } from '../hooks/useYnabQueries'
 import type { YnabBudget } from '../types/ynab'
+import { SubscriptionList } from './SubscriptionList'
 
 export function YnabDashboard() {
   const { isAuthenticated, accessToken, logout } = useYnabAuth()
@@ -26,6 +28,12 @@ export function YnabDashboard() {
     error: transactionsError,
   } = useRecentTransactions(accessToken, selectedBudget?.id || null)
 
+  const {
+    data: subscriptions = [],
+    isLoading: subscriptionsLoading,
+    error: subscriptionsError,
+  } = useSubscriptionAnalysis(accessToken, selectedBudget?.id || null)
+
   // Auto-select the default budget when budgets are loaded
   useEffect(() => {
     if (defaultBudget && !selectedBudget) {
@@ -37,8 +45,11 @@ export function YnabDashboard() {
     setSelectedBudget(budget)
   }
 
-  const loading = budgetsLoading || transactionsLoading
-  const error = budgetsError?.message || transactionsError?.message
+  const loading = budgetsLoading || transactionsLoading || subscriptionsLoading
+  const error =
+    budgetsError?.message ||
+    transactionsError?.message ||
+    subscriptionsError?.message
 
   if (!isAuthenticated) {
     return null
@@ -80,29 +91,45 @@ export function YnabDashboard() {
       {selectedBudget && (
         <div className="budget-info">
           <h3>Budget: {selectedBudget.name}</h3>
-          <p>Currency: {selectedBudget.currency_format.iso_code}</p>
-          <p>Accounts: {selectedBudget.accounts?.length}</p>
+          <div className="budget-details">
+            <p>
+              <strong>Currency:</strong>{' '}
+              {selectedBudget.currency_format.iso_code}
+            </p>
+            <p>
+              <strong>Accounts:</strong> {selectedBudget.accounts?.length}
+            </p>
+          </div>
 
-          {transactions.length > 0 && (
-            <div className="transactions-summary">
-              <h4>Recent Transactions: {transactions.length}</h4>
-              <div className="transaction-list">
-                {transactions.slice(0, 10).map((transaction) => (
-                  <div key={transaction.id} className="transaction-item">
-                    <span className="date">{transaction.date}</span>
-                    <span className="payee">
-                      {transaction.payee_name || 'Unknown'}
-                    </span>
-                    <span className="amount">
-                      {selectedBudget.currency_format.currency_symbol}
-                      {(transaction.amount / 1000).toFixed(2)}
-                    </span>
-                    <span className="account">{transaction.account_name}</span>
-                  </div>
-                ))}
+          <div className="space-y-6">
+            <SubscriptionList
+              subscriptions={subscriptions}
+              currencySymbol={selectedBudget.currency_format.currency_symbol}
+            />
+
+            {transactions.length > 0 && (
+              <div className="transactions-summary">
+                <h4>Recent Transactions: {transactions.length}</h4>
+                <div className="transaction-list">
+                  {transactions.slice(0, 10).map((transaction) => (
+                    <div key={transaction.id} className="transaction-item">
+                      <span className="date">{transaction.date}</span>
+                      <span className="payee">
+                        {transaction.payee_name || 'Unknown'}
+                      </span>
+                      <span className="amount">
+                        {selectedBudget.currency_format.currency_symbol}
+                        {(transaction.amount / 1000).toFixed(2)}
+                      </span>
+                      <span className="account">
+                        {transaction.account_name}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       )}
     </div>

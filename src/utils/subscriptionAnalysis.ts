@@ -52,7 +52,7 @@ export function analyzeSubscriptions(
     const confidence = calculateConfidence(intervals, sortedTransactions.length)
 
     // Only include patterns with reasonable confidence (at least 3 transactions)
-    if (confidence > 0.5 && sortedTransactions.length >= 3) {
+    if (confidence > 0.3 && sortedTransactions.length >= 3) {
       const amounts = sortedTransactions.map((t) => Math.abs(t.amount))
       const averageAmount =
         amounts.reduce((sum, amount) => sum + amount, 0) / amounts.length
@@ -126,12 +126,16 @@ function calculateConfidence(
   const standardDeviation = Math.sqrt(variance)
 
   // Lower standard deviation = higher confidence
-  const consistencyScore = Math.max(0, 1 - standardDeviation / avgInterval)
+  // Use a more forgiving formula for irregular patterns
+  const consistencyScore = Math.max(
+    0,
+    1 - standardDeviation / (avgInterval + 1)
+  )
 
   // More transactions = higher confidence
   const volumeScore = Math.min(1, transactionCount / 12) // Cap at 12 transactions
 
-  return consistencyScore * 0.7 + volumeScore * 0.3
+  return consistencyScore * 0.6 + volumeScore * 0.4
 }
 
 export function formatCurrency(amount: number, currencySymbol: string): string {
