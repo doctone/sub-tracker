@@ -1,0 +1,132 @@
+/* Subscription Summary Styles - Dark Mode */
+.summary {
+  margin-top: 1.5rem;
+  padding: 1.5rem 0;
+}
+
+.empty {
+  color: #9ca3af;
+  text-align: center;
+  padding: 2rem;
+  background: #1f2937;
+  border-radius: 8px;
+  border: 1px solid #374151;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #f9fafb;
+  margin: 0 0 2rem 0;
+  text-align: left;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sectionTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #667eea;
+  margin: 0;
+}
+
+.text {
+  color: #d1d5db;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.text strong {
+  color: #f9fafb;
+  font-weight: 600;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 1.5rem;
+}
+
+.toggle {
+  background: transparent;
+  color: #667eea;
+  border: 1px solid #667eea;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.toggle:hover {
+  background: #667eea;
+  color: white;
+}
+
+.toggle:active {
+  transform: translateY(0);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .summary {
+    padding: 1rem 0;
+  }
+
+  .title {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .text {
+    font-size: 0.9rem;
+  }
+
+  .content {
+    gap: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .summary {
+    margin-top: 1rem;
+    padding: 0.5rem 0;
+  }
+
+  .title {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  .content {
+    gap: 1rem;
+  }
+
+  .section {
+    gap: 0.25rem;
+  }
+
+  .sectionTitle {
+    font-size: 0.95rem;
+  }
+
+  .text {
+    font-size: 0.85rem;
+  }
+
+  .toggle {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+  }
+}

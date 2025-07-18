@@ -1,0 +1,224 @@
+/* Subscription List Styles - Dark Mode */
+.empty {
+  color: #9ca3af;
+  text-align: center;
+  padding: 2rem;
+  background: #1f2937;
+  border-radius: 8px;
+  border: 1px solid #374151;
+}
+
+.container {
+  margin-top: 1.5rem;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.headerSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #f9fafb;
+  margin: 0;
+}
+
+.grid {
+  display: grid;
+  gap: 1rem;
+  padding-bottom: 1rem;
+}
+
+.card {
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+  border-color: #4b5563;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.name {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #f9fafb;
+  margin: 0;
+}
+
+.amountInfo {
+  text-align: right;
+}
+
+.amount {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #f9fafb;
+}
+
+.frequency {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  margin-top: 0.25rem;
+}
+
+.details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.detailItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+.value {
+  color: #f9fafb;
+  font-weight: 500;
+}
+
+.confidence {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.confidenceBar {
+  flex: 1;
+  height: 0.5rem;
+  background-color: #374151;
+  border-radius: 0.25rem;
+  overflow: hidden;
+}
+
+.confidenceFill {
+  height: 100%;
+  border-radius: 0.25rem;
+  transition: width 0.3s ease;
+}
+
+.confidenceHigh {
+  background-color: #10b981;
+}
+
+.confidenceMedium {
+  background-color: #f59e0b;
+}
+
+.confidenceLow {
+  background-color: #ef4444;
+}
+
+.confidenceText {
+  font-size: 0.75rem;
+  color: #d1d5db;
+  min-width: 3rem;
+  text-align: right;
+}
+
+.footer {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #374151;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+}
+
+.metaItem {
+  color: #9ca3af;
+}
+
+.separator {
+  color: #6b7280;
+}
+
+.toggle {
+  background: transparent;
+  color: #667eea;
+  border: 1px solid #667eea;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.toggle:hover {
+  background: #667eea;
+  color: white;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .headerSection {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+
+  .details {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .amountInfo {
+    text-align: left;
+  }
+
+  .meta {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 1rem;
+  }
+
+  .name {
+    font-size: 1rem;
+  }
+
+  .amount {
+    font-size: 1rem;
+  }
+}
