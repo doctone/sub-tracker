@@ -124,7 +124,10 @@ export function YnabDashboard() {
                 <h4>Recent Transactions: {transactions.length}</h4>
                 <div className={styles.transactionList}>
                   {transactions.slice(0, 10).map((transaction) => (
-                    <div key={transaction.id} className={styles.transactionItem}>
+                    <div
+                      key={transaction.id}
+                      className={styles.transactionItem}
+                    >
                       <span className={styles.date}>{transaction.date}</span>
                       <span className={styles.payee}>
                         {transaction.payee_name || 'Unknown'}

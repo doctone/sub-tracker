@@ -67,10 +67,12 @@ export function SubscriptionSummary({
             <strong>{highConfidenceCount}</strong> high-confidence subscriptions
           </p>
           <p className={styles.text}>
-            <strong>{formatCurrency(monthlyTotal, currencySymbol)}</strong> per month
+            <strong>{formatCurrency(monthlyTotal, currencySymbol)}</strong> per
+            month
           </p>
           <p className={styles.text}>
-            <strong>{formatCurrency(yearlyTotal, currencySymbol)}</strong> annually
+            <strong>{formatCurrency(yearlyTotal, currencySymbol)}</strong>{' '}
+            annually
           </p>
         </div>
 
@@ -81,16 +83,19 @@ export function SubscriptionSummary({
             <strong>{Math.round(averageConfidence * 100)}%</strong>.
           </p>
           <p className={styles.text}>
-            • <strong>{highConfidenceCount}</strong> highly confident subscriptions ({'>'}80%)
+            • <strong>{highConfidenceCount}</strong> highly confident
+            subscriptions ({'>'}80%)
           </p>
           {mediumConfidenceCount > 0 && (
             <p className={styles.text}>
-              • <strong>{mediumConfidenceCount}</strong> moderately confident (60-80%)
+              • <strong>{mediumConfidenceCount}</strong> moderately confident
+              (60-80%)
             </p>
           )}
           {lowConfidenceCount > 0 && (
             <p className={styles.text}>
-              • <strong>{lowConfidenceCount}</strong> potential patterns that need review
+              • <strong>{lowConfidenceCount}</strong> potential patterns that
+              need review
             </p>
           )}
         </div>
@@ -100,7 +105,9 @@ export function SubscriptionSummary({
             <h3 className={styles.sectionTitle}>Largest Subscriptions</h3>
             {topSubscriptions.map((sub) => (
               <p key={sub.payeeName} className={styles.text}>
-                • <strong>{sub.payeeName}</strong> - {formatCurrency(sub.averageAmount, currencySymbol)} {sub.frequency}
+                • <strong>{sub.payeeName}</strong> -{' '}
+                {formatCurrency(sub.averageAmount, currencySymbol)}{' '}
+                {sub.frequency}
               </p>
             ))}
           </div>
