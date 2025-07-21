@@ -1,0 +1,11 @@
+echo "Running pre-push checks..."
+
+# Run format check
+echo "Checking code formatting..."
+pnpm run format:check
+
+# Run lint check
+echo "Running linter..."
+pnpm run lint
+
+echo "Pre-push checks completed successfully!"
