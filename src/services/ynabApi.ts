@@ -30,12 +30,18 @@ export class YnabApiClient {
     this.lastRequestTime = Date.now()
 
     try {
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 30000) // 30 second timeout
+
       const response = await fetch(`${this.baseUrl}${endpoint}`, {
         headers: {
           Authorization: `Bearer ${this.accessToken}`,
           'Content-Type': 'application/json',
         },
+        signal: controller.signal,
       })
+
+      clearTimeout(timeoutId)
 
       if (!response.ok) {
         if (response.status === 401) {
@@ -47,10 +53,15 @@ export class YnabApiClient {
       const data = await response.json()
       return data.data
     } catch (error) {
+      if (error instanceof Error && error.name === 'AbortError') {
+        throw new Error('Request timeout - YNAB API response took too long')
+      }
+      
       if (
         retries > 0 &&
         error instanceof Error &&
-        !error.message.includes('401')
+        !error.message.includes('401') &&
+        error.name !== 'AbortError'
       ) {
         await new Promise((resolve) => setTimeout(resolve, 1000))
         return this.requestWithRetry<T>(endpoint, retries - 1)

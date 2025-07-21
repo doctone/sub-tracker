@@ -32,7 +32,6 @@ export function useYnabAuth() {
           sessionStorage.removeItem('ynab_token')
         }
       } catch (error) {
-        console.error('Error parsing stored token:', error)
         sessionStorage.removeItem('ynab_token')
       }
     }
