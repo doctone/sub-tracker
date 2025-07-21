@@ -7,7 +7,6 @@ import { Routes, Route, Link } from 'react-router-dom'
 
 function App() {
   const { isAuthenticated } = useYnabAuth()
-  
 
   return (
     <div className="app">
