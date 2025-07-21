@@ -23,13 +23,18 @@
   margin-top: 1rem;
 }
 
+.tableContainer {
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid #374151;
+}
+
 .table {
   width: 100%;
+  min-width: 600px; /* Ensure table has minimum width */
   border-collapse: collapse;
   background: #1f2937;
-  border-radius: 8px;
-  overflow: hidden;
-  border: 1px solid #374151;
+  border: none; /* Border now on container */
 }
 
 .table th {
@@ -120,10 +125,16 @@
   color: #9ca3af !important;
 }
 
+/* Progressive column hiding for mobile */
+.hideOnSmall {
+  display: table-cell;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .table {
     font-size: 0.875rem;
+    min-width: 500px; /* Reduce minimum width */
   }
   
   .table th,
@@ -132,20 +143,24 @@
   }
   
   .nameCell {
-    min-width: 150px;
+    min-width: 140px; /* Reduce from 150px */
   }
   
   .confidenceCell,
-  .frequencyCell,
+  .frequencyCell {
+    min-width: 90px; /* Slightly reduce */
+  }
+  
   .costCell,
   .renewalCell {
-    min-width: 80px;
+    min-width: 85px; /* Reduce from 100px */
   }
 }
 
 @media (max-width: 640px) {
   .table {
     font-size: 0.75rem;
+    min-width: 400px; /* Further reduce minimum width */
   }
   
   .table th,
@@ -153,8 +168,52 @@
     padding: 0.5rem 0.25rem;
   }
   
+  .nameCell {
+    min-width: 120px; /* Further reduce */
+  }
+  
+  .costCell,
+  .renewalCell {
+    min-width: 75px;
+  }
+  
   .confidenceBadge {
     padding: 0.125rem 0.5rem;
     font-size: 0.625rem;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Hide less critical columns on very small screens */
+  .hideOnSmall {
+    display: none;
+  }
+  
+  .table {
+    min-width: 300px; /* Much smaller for 3 columns */
+  }
+  
+  .nameCell {
+    min-width: 120px;
+  }
+  
+  .costCell {
+    min-width: 80px;
+    text-align: right;
+  }
+  
+  .renewalCell {
+    min-width: 100px;
+  }
+  
+  /* Add mobile-specific styling for the remaining columns */
+  .table th:first-child,
+  .table td:first-child {
+    padding-left: 0.5rem;
+  }
+  
+  .table th:last-child,
+  .table td:last-child {
+    padding-right: 0.5rem;
   }
 }

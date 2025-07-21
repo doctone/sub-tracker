@@ -45,6 +45,14 @@
   justify-content: center;
 }
 
+@media (max-width: 768px) {
+  .app-main {
+    min-height: 250px;
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
 .hero-section {
   display: flex;
   align-items: center;

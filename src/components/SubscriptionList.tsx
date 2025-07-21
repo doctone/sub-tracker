@@ -35,55 +35,76 @@ export function SubscriptionList({
       <div className={styles.summary}>
         Based on {transactionCount} transactions analysed
       </div>
-      
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            <th>Subscription</th>
-            <th>Confidence</th>
-            <th>Frequency</th>
-            <th>Cost</th>
-            <th>Next Renewal</th>
-          </tr>
-        </thead>
-        <tbody>
-          {subscriptions.map((subscription, index) => {
-            const nextDate = getNextExpectedDate(subscription)
-            const confidencePercent = Math.round(subscription.confidence * 100)
-            const isRenewalPast = nextDate ? new Date(nextDate) < new Date() : false
-            
-            return (
-              <tr key={`${subscription.payeeName}-${index}`} className={isRenewalPast ? styles.rowPast : ''}>
-                <td className={styles.nameCell}>
-                  {subscription.payeeName}
-                </td>
-                <td className={styles.confidenceCell}>
-                  <span className={`${styles.confidenceBadge} ${
-                    subscription.confidence > 0.8
-                      ? styles.confidenceHigh
-                      : subscription.confidence > 0.6
-                        ? styles.confidenceMedium
-                        : styles.confidenceLow
-                  }`}>
-                    {confidencePercent}%
-                  </span>
-                </td>
-                <td className={styles.frequencyCell}>
-                  {subscription.frequency === 'monthly' ? 'Monthly' :
-                   subscription.frequency === 'yearly' ? 'Annual' :
-                   subscription.frequency === 'weekly' ? 'Weekly' : 'Unknown'}
-                </td>
-                <td className={styles.costCell}>
-                  {formatCurrency(subscription.averageAmount, currencySymbol)}
-                </td>
-                <td className={`${styles.renewalCell} ${isRenewalPast ? styles.renewalPast : ''}`}>
-                  {nextDate ? new Date(nextDate).toLocaleDateString() : 'Unknown'}
-                </td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
+
+      <div className={styles.tableContainer}>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th>Subscription</th>
+              <th className={styles.hideOnSmall}>Confidence</th>
+              <th className={styles.hideOnSmall}>Frequency</th>
+              <th>Cost ( est )</th>
+              <th>Next Renewal</th>
+            </tr>
+          </thead>
+          <tbody>
+            {subscriptions.map((subscription, index) => {
+              const nextDate = getNextExpectedDate(subscription)
+              const confidencePercent = Math.round(
+                subscription.confidence * 100
+              )
+              const isRenewalPast = nextDate
+                ? new Date(nextDate) < new Date()
+                : false
+
+              return (
+                <tr
+                  key={`${subscription.payeeName}-${index}`}
+                  className={isRenewalPast ? styles.rowPast : ''}
+                >
+                  <td className={styles.nameCell}>{subscription.payeeName}</td>
+                  <td
+                    className={`${styles.confidenceCell} ${styles.hideOnSmall}`}
+                  >
+                    <span
+                      className={`${styles.confidenceBadge} ${
+                        subscription.confidence > 0.8
+                          ? styles.confidenceHigh
+                          : subscription.confidence > 0.6
+                            ? styles.confidenceMedium
+                            : styles.confidenceLow
+                      }`}
+                    >
+                      {confidencePercent}%
+                    </span>
+                  </td>
+                  <td
+                    className={`${styles.frequencyCell} ${styles.hideOnSmall}`}
+                  >
+                    {subscription.frequency === 'monthly'
+                      ? 'Monthly'
+                      : subscription.frequency === 'yearly'
+                        ? 'Annual'
+                        : subscription.frequency === 'weekly'
+                          ? 'Weekly'
+                          : 'Unknown'}
+                  </td>
+                  <td className={styles.costCell}>
+                    {formatCurrency(subscription.averageAmount, currencySymbol)}
+                  </td>
+                  <td
+                    className={`${styles.renewalCell} ${isRenewalPast ? styles.renewalPast : ''}`}
+                  >
+                    {nextDate
+                      ? new Date(nextDate).toLocaleDateString()
+                      : 'Unknown'}
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }
