@@ -56,7 +56,7 @@ export class YnabApiClient {
       if (error instanceof Error && error.name === 'AbortError') {
         throw new Error('Request timeout - YNAB API response took too long')
       }
-      
+
       if (
         retries > 0 &&
         error instanceof Error &&

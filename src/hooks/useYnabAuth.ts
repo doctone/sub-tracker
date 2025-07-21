@@ -31,7 +31,7 @@ export function useYnabAuth() {
         } else {
           sessionStorage.removeItem('ynab_token')
         }
-      } catch (error) {
+      } catch {
         sessionStorage.removeItem('ynab_token')
       }
     }
