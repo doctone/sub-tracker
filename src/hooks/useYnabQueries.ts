@@ -98,11 +98,17 @@ export function useDefaultBudget(
 export function useRecentTransactions(
   accessToken: string | null,
   budgetId: string | null,
-  monthsBack: number = 12
+  monthsBack?: number
 ): UseQueryResult<YnabTransaction[], Error> {
-  const sinceDate = new Date()
-  sinceDate.setMonth(sinceDate.getMonth() - monthsBack)
-  const sinceDateStr = sinceDate.toISOString().split('T')[0]
+  // If monthsBack is not provided or is 0, fetch all transactions (no sinceDate)
+  const sinceDateStr =
+    monthsBack && monthsBack > 0
+      ? (() => {
+          const sinceDate = new Date()
+          sinceDate.setMonth(sinceDate.getMonth() - monthsBack)
+          return sinceDate.toISOString().split('T')[0]
+        })()
+      : undefined
 
   return useTransactions(accessToken, budgetId, sinceDateStr)
 }
@@ -110,7 +116,7 @@ export function useRecentTransactions(
 export function useSubscriptionAnalysis(
   accessToken: string | null,
   budgetId: string | null,
-  monthsBack: number = 12
+  monthsBack?: number
 ): UseQueryResult<SubscriptionPattern[], Error> {
   return useQuery({
     queryKey: ['ynab', 'subscriptions', budgetId, monthsBack],
@@ -119,9 +125,15 @@ export function useSubscriptionAnalysis(
         throw new Error('Access token and budget ID are required')
       }
 
-      const sinceDate = new Date()
-      sinceDate.setMonth(sinceDate.getMonth() - monthsBack)
-      const sinceDateStr = sinceDate.toISOString().split('T')[0]
+      // If monthsBack is not provided or is 0, fetch all transactions (no sinceDate)
+      const sinceDateStr =
+        monthsBack && monthsBack > 0
+          ? (() => {
+              const sinceDate = new Date()
+              sinceDate.setMonth(sinceDate.getMonth() - monthsBack)
+              return sinceDate.toISOString().split('T')[0]
+            })()
+          : undefined
 
       const client = new YnabApiClient(accessToken)
       const response: YnabTransactionsResponse = await client.getTransactions(

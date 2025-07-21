@@ -5,7 +5,7 @@ export interface SubscriptionPattern {
   amounts: number[]
   dates: string[]
   averageAmount: number
-  frequency: 'monthly' | 'weekly' | 'yearly' | 'unknown'
+  frequency: 'monthly' | 'weekly' | 'quarterly' | 'yearly' | 'unknown'
   confidence: number
   lastTransactionDate: string
   accountNames: string[]
@@ -54,8 +54,10 @@ export function analyzeSubscriptions(
     const frequency = determineFrequency(intervals)
     const confidence = calculateConfidence(intervals, sortedTransactions.length)
 
-    // Only include patterns with reasonable confidence (at least 3 transactions)
-    if (confidence > 0.3 && sortedTransactions.length >= 3) {
+    // Only include patterns with reasonable confidence
+    // For yearly patterns, allow as few as 2 transactions since they're less frequent
+    const minTransactions = frequency === 'yearly' ? 2 : 3
+    if (confidence > 0.25 && sortedTransactions.length >= minTransactions) {
       const amounts = sortedTransactions.map((t) => Math.abs(t.amount))
       const averageAmount =
         amounts.reduce((sum, amount) => sum + amount, 0) / amounts.length
@@ -77,18 +79,29 @@ export function analyzeSubscriptions(
     }
   })
 
-  // Sort by confidence and average amount
+  // Sort by confidence first, then by next renewal date
   return subscriptionPatterns.sort((a, b) => {
     if (b.confidence !== a.confidence) {
       return b.confidence - a.confidence
     }
-    return b.averageAmount - a.averageAmount
+
+    // If confidence is equal, sort by next renewal date
+    const nextDateA = getNextExpectedDate(a)
+    const nextDateB = getNextExpectedDate(b)
+
+    // Handle null dates (put them last)
+    if (!nextDateA && !nextDateB) return 0
+    if (!nextDateA) return 1
+    if (!nextDateB) return -1
+
+    // Sort by date (earliest first)
+    return new Date(nextDateA).getTime() - new Date(nextDateB).getTime()
   })
 }
 
 function determineFrequency(
   intervals: number[]
-): 'monthly' | 'weekly' | 'yearly' | 'unknown' {
+): 'monthly' | 'weekly' | 'quarterly' | 'yearly' | 'unknown' {
   if (intervals.length === 0) return 'unknown'
 
   const avgInterval =
@@ -102,6 +115,11 @@ function determineFrequency(
   // Monthly: 30 days ± 7 days
   if (avgInterval >= 23 && avgInterval <= 37) {
     return 'monthly'
+  }
+
+  // Quarterly: 90 days ± 15 days
+  if (avgInterval >= 75 && avgInterval <= 105) {
+    return 'quarterly'
   }
 
   // Yearly: 365 days ± 30 days
@@ -136,9 +154,10 @@ function calculateConfidence(
   )
 
   // More transactions = higher confidence
-  const volumeScore = Math.min(1, transactionCount / 12) // Cap at 12 transactions
+  // With broader dataset, scale the volume score better for different frequencies
+  const volumeScore = Math.min(1, transactionCount / 24) // Cap at 24 transactions for better scaling
 
-  return consistencyScore * 0.6 + volumeScore * 0.4
+  return consistencyScore * 0.7 + volumeScore * 0.3
 }
 
 export function formatCurrency(amount: number, currencySymbol: string): string {
@@ -159,6 +178,9 @@ export function getNextExpectedDate(
       break
     case 'monthly':
       nextDate.setMonth(lastDate.getMonth() + 1)
+      break
+    case 'quarterly':
+      nextDate.setMonth(lastDate.getMonth() + 3)
       break
     case 'yearly':
       nextDate.setFullYear(lastDate.getFullYear() + 1)

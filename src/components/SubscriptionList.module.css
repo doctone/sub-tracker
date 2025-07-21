@@ -1,13 +1,4 @@
 /* Subscription List Styles - Dark Mode */
-.empty {
-  color: #9ca3af;
-  text-align: center;
-  padding: 2rem;
-  background: #1f2937;
-  border-radius: 8px;
-  border: 1px solid #374151;
-}
-
 .container {
   margin-top: 1.5rem;
   flex: 1;
@@ -15,210 +6,214 @@
   overflow-y: auto;
 }
 
-.headerSection {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.summary {
+  color: #9ca3af;
+  font-size: 0.875rem;
   margin-bottom: 1rem;
+  text-align: center;
 }
 
-.title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #f9fafb;
-  margin: 0;
-}
-
-.grid {
-  display: grid;
-  gap: 1rem;
-  padding-bottom: 1rem;
-}
-
-.card {
+.empty {
+  color: #9ca3af;
+  text-align: center;
+  padding: 2rem;
   background: #1f2937;
+  border-radius: 8px;
   border: 1px solid #374151;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  transition:
-    box-shadow 0.2s ease,
-    border-color 0.2s ease;
+  margin-top: 1rem;
 }
 
-.card:hover {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
-  border-color: #4b5563;
+.tableContainer {
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid #374151;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 1rem;
+.table {
+  width: 100%;
+  min-width: 600px; /* Ensure table has minimum width */
+  border-collapse: collapse;
+  background: #1f2937;
+  border: none; /* Border now on container */
 }
 
-.name {
-  font-size: 1.125rem;
-  font-weight: 500;
+.table th {
+  background: #111827;
   color: #f9fafb;
-  margin: 0;
-}
-
-.amountInfo {
-  text-align: right;
-}
-
-.amount {
-  font-size: 1.125rem;
+  padding: 1rem;
+  text-align: left;
   font-weight: 600;
-  color: #f9fafb;
-}
-
-.frequency {
   font-size: 0.875rem;
-  color: #9ca3af;
-  margin-top: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #374151;
 }
 
-.details {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.detailItem {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.label {
-  color: #9ca3af;
-  font-size: 0.875rem;
-}
-
-.value {
+.table td {
+  padding: 1rem;
   color: #f9fafb;
+  border-bottom: 1px solid #374151;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.table tr:hover {
+  background: #374151;
+}
+
+.nameCell {
   font-weight: 500;
+  min-width: 200px;
 }
 
-.confidence {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+.confidenceCell {
+  text-align: center;
+  min-width: 100px;
 }
 
-.confidenceBar {
-  flex: 1;
-  height: 0.5rem;
-  background-color: #374151;
-  border-radius: 0.25rem;
-  overflow: hidden;
-}
-
-.confidenceFill {
-  height: 100%;
-  border-radius: 0.25rem;
-  transition: width 0.3s ease;
+.confidenceBadge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+  min-width: 50px;
 }
 
 .confidenceHigh {
   background-color: #10b981;
+  color: white;
 }
 
 .confidenceMedium {
   background-color: #f59e0b;
+  color: white;
 }
 
 .confidenceLow {
   background-color: #ef4444;
-}
-
-.confidenceText {
-  font-size: 0.75rem;
-  color: #d1d5db;
-  min-width: 3rem;
-  text-align: right;
-}
-
-.footer {
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid #374151;
-}
-
-.meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  font-size: 0.75rem;
-}
-
-.metaItem {
-  color: #9ca3af;
-}
-
-.separator {
-  color: #6b7280;
-}
-
-.toggle {
-  background: transparent;
-  color: #667eea;
-  border: 1px solid #667eea;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 0.9rem;
-}
-
-.toggle:hover {
-  background: #667eea;
   color: white;
+}
+
+.frequencyCell {
+  min-width: 100px;
+}
+
+.costCell {
+  font-weight: 600;
+  min-width: 100px;
+}
+
+.renewalCell {
+  color: #9ca3af;
+  min-width: 120px;
+}
+
+.renewalPast {
+  color: #6b7280;
+  opacity: 0.6;
+}
+
+.rowPast {
+  opacity: 0.7;
+}
+
+.rowPast td {
+  color: #9ca3af !important;
+}
+
+/* Progressive column hiding for mobile */
+.hideOnSmall {
+  display: table-cell;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .headerSection {
-    flex-direction: column;
-    gap: 0.75rem;
-    align-items: flex-start;
+  .table {
+    font-size: 0.875rem;
+    min-width: 500px; /* Reduce minimum width */
   }
 
-  .details {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
+  .table th,
+  .table td {
+    padding: 0.75rem 0.5rem;
   }
 
-  .header {
-    flex-direction: column;
-    gap: 0.75rem;
+  .nameCell {
+    min-width: 140px; /* Reduce from 150px */
   }
 
-  .amountInfo {
-    text-align: left;
+  .confidenceCell,
+  .frequencyCell {
+    min-width: 90px; /* Slightly reduce */
   }
 
-  .meta {
-    flex-direction: column;
-    gap: 0.25rem;
+  .costCell,
+  .renewalCell {
+    min-width: 85px; /* Reduce from 100px */
+  }
+}
+
+@media (max-width: 640px) {
+  .table {
+    font-size: 0.75rem;
+    min-width: 400px; /* Further reduce minimum width */
+  }
+
+  .table th,
+  .table td {
+    padding: 0.5rem 0.25rem;
+  }
+
+  .nameCell {
+    min-width: 120px; /* Further reduce */
+  }
+
+  .costCell,
+  .renewalCell {
+    min-width: 75px;
+  }
+
+  .confidenceBadge {
+    padding: 0.125rem 0.5rem;
+    font-size: 0.625rem;
   }
 }
 
 @media (max-width: 480px) {
-  .card {
-    padding: 1rem;
+  /* Hide less critical columns on very small screens */
+  .hideOnSmall {
+    display: none;
   }
 
-  .name {
-    font-size: 1rem;
+  .table {
+    min-width: 300px; /* Much smaller for 3 columns */
   }
 
-  .amount {
-    font-size: 1rem;
+  .nameCell {
+    min-width: 120px;
+  }
+
+  .costCell {
+    min-width: 80px;
+    text-align: right;
+  }
+
+  .renewalCell {
+    min-width: 100px;
+  }
+
+  /* Add mobile-specific styling for the remaining columns */
+  .table th:first-child,
+  .table td:first-child {
+    padding-left: 0.5rem;
+  }
+
+  .table th:last-child,
+  .table td:last-child {
+    padding-right: 0.5rem;
   }
 }

@@ -7,14 +7,12 @@ import {
   useSubscriptionAnalysis,
 } from '../hooks/useYnabQueries'
 import type { YnabBudget } from '../types/ynab'
-import { SubscriptionSummary } from './SubscriptionSummary'
 import { SubscriptionList } from './SubscriptionList'
 import styles from './YnabDashboard.module.css'
 
 export function YnabDashboard() {
   const { isAuthenticated, accessToken, logout } = useYnabAuth()
   const [selectedBudget, setSelectedBudget] = useState<YnabBudget | null>(null)
-  const [showDetailedView, setShowDetailedView] = useState(false)
 
   // Use TanStack Query hooks
   const {
@@ -105,45 +103,11 @@ export function YnabDashboard() {
           </div>
 
           <div className={styles.spaceY6}>
-            {showDetailedView ? (
-              <SubscriptionList
-                subscriptions={subscriptions}
-                currencySymbol={selectedBudget.currency_format.currency_symbol}
-                onToggleSummary={() => setShowDetailedView(false)}
-              />
-            ) : (
-              <SubscriptionSummary
-                subscriptions={subscriptions}
-                currencySymbol={selectedBudget.currency_format.currency_symbol}
-                onToggleDetailed={() => setShowDetailedView(true)}
-              />
-            )}
-
-            {transactions.length > 0 && (
-              <div className={styles.transactionsSummary}>
-                <h4>Recent Transactions: {transactions.length}</h4>
-                <div className={styles.transactionList}>
-                  {transactions.slice(0, 10).map((transaction) => (
-                    <div
-                      key={transaction.id}
-                      className={styles.transactionItem}
-                    >
-                      <span className={styles.date}>{transaction.date}</span>
-                      <span className={styles.payee}>
-                        {transaction.payee_name || 'Unknown'}
-                      </span>
-                      <span className={styles.amount}>
-                        {selectedBudget.currency_format.currency_symbol}
-                        {(transaction.amount / 1000).toFixed(2)}
-                      </span>
-                      <span className={styles.account}>
-                        {transaction.account_name}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+            <SubscriptionList
+              subscriptions={subscriptions}
+              currencySymbol={selectedBudget.currency_format.currency_symbol}
+              transactionCount={transactions.length}
+            />
           </div>
         </div>
       )}
