@@ -18,6 +18,9 @@ export function analyzeSubscriptions(
   const payeeGroups = new Map<string, YnabTransaction[]>()
 
   transactions.forEach((transaction) => {
+    // Only consider outgoing transactions (negative amounts) as potential subscriptions
+    if (transaction.amount >= 0) return
+
     const payeeName = transaction.payee_name || 'Unknown'
     if (!payeeGroups.has(payeeName)) {
       payeeGroups.set(payeeName, [])

@@ -7,11 +7,14 @@ import {
   useSubscriptionAnalysis,
 } from '../hooks/useYnabQueries'
 import type { YnabBudget } from '../types/ynab'
+import { SubscriptionSummary } from './SubscriptionSummary'
 import { SubscriptionList } from './SubscriptionList'
+import styles from './YnabDashboard.module.css'
 
 export function YnabDashboard() {
   const { isAuthenticated, accessToken, logout } = useYnabAuth()
   const [selectedBudget, setSelectedBudget] = useState<YnabBudget | null>(null)
+  const [showDetailedView, setShowDetailedView] = useState(false)
 
   // Use TanStack Query hooks
   const {
@@ -56,20 +59,20 @@ export function YnabDashboard() {
   }
 
   return (
-    <div className="ynab-dashboard">
-      <div className="dashboard-header">
+    <div className={styles.dashboard}>
+      <div className={styles.header}>
         <h2>YNAB Dashboard</h2>
-        <button onClick={logout} className="logout-btn">
+        <button onClick={logout} className={styles.logoutBtn}>
           Logout
         </button>
       </div>
 
-      {error && <div className="error-message">{error}</div>}
+      {error && <div className={styles.errorMessage}>{error}</div>}
 
-      {loading && <div className="loading">Loading...</div>}
+      {loading && <div className={styles.loading}>Loading...</div>}
 
       {budgets.length > 0 && (
-        <div className="budget-selector">
+        <div className={styles.budgetSelector}>
           <h3>Select Budget:</h3>
           <select
             value={selectedBudget?.id || ''}
@@ -89,9 +92,9 @@ export function YnabDashboard() {
       )}
 
       {selectedBudget && (
-        <div className="budget-info">
+        <div className={styles.budgetInfo}>
           <h3>Budget: {selectedBudget.name}</h3>
-          <div className="budget-details">
+          <div className={styles.budgetDetails}>
             <p>
               <strong>Currency:</strong>{' '}
               {selectedBudget.currency_format.iso_code}
@@ -101,27 +104,39 @@ export function YnabDashboard() {
             </p>
           </div>
 
-          <div className="space-y-6">
-            <SubscriptionList
-              subscriptions={subscriptions}
-              currencySymbol={selectedBudget.currency_format.currency_symbol}
-            />
+          <div className={styles.spaceY6}>
+            {showDetailedView ? (
+              <SubscriptionList
+                subscriptions={subscriptions}
+                currencySymbol={selectedBudget.currency_format.currency_symbol}
+                onToggleSummary={() => setShowDetailedView(false)}
+              />
+            ) : (
+              <SubscriptionSummary
+                subscriptions={subscriptions}
+                currencySymbol={selectedBudget.currency_format.currency_symbol}
+                onToggleDetailed={() => setShowDetailedView(true)}
+              />
+            )}
 
             {transactions.length > 0 && (
-              <div className="transactions-summary">
+              <div className={styles.transactionsSummary}>
                 <h4>Recent Transactions: {transactions.length}</h4>
-                <div className="transaction-list">
+                <div className={styles.transactionList}>
                   {transactions.slice(0, 10).map((transaction) => (
-                    <div key={transaction.id} className="transaction-item">
-                      <span className="date">{transaction.date}</span>
-                      <span className="payee">
+                    <div
+                      key={transaction.id}
+                      className={styles.transactionItem}
+                    >
+                      <span className={styles.date}>{transaction.date}</span>
+                      <span className={styles.payee}>
                         {transaction.payee_name || 'Unknown'}
                       </span>
-                      <span className="amount">
+                      <span className={styles.amount}>
                         {selectedBudget.currency_format.currency_symbol}
                         {(transaction.amount / 1000).toFixed(2)}
                       </span>
-                      <span className="account">
+                      <span className={styles.account}>
                         {transaction.account_name}
                       </span>
                     </div>

@@ -3,19 +3,22 @@ import {
   getNextExpectedDate,
 } from '../utils/subscriptionAnalysis'
 import type { SubscriptionPattern } from '../utils/subscriptionAnalysis'
+import styles from './SubscriptionList.module.css'
 
 interface SubscriptionListProps {
   subscriptions: SubscriptionPattern[]
   currencySymbol: string
+  onToggleSummary?: () => void
 }
 
 export function SubscriptionList({
   subscriptions,
   currencySymbol,
+  onToggleSummary,
 }: SubscriptionListProps) {
   if (subscriptions.length === 0) {
     return (
-      <div className="subscription-empty">
+      <div className={styles.empty}>
         No subscription patterns found. Try adding more historical data by
         increasing the analysis period.
       </div>
@@ -23,57 +26,64 @@ export function SubscriptionList({
   }
 
   return (
-    <div className="subscription-container">
-      <h2 className="subscription-title">
-        Detected Subscriptions ({subscriptions.length})
-      </h2>
+    <div className={styles.container}>
+      <div className={styles.headerSection}>
+        <h2 className={styles.title}>
+          Detected Subscriptions ({subscriptions.length})
+        </h2>
+        {onToggleSummary && (
+          <button className={styles.toggle} onClick={onToggleSummary}>
+            Back to Summary
+          </button>
+        )}
+      </div>
 
-      <div className="subscription-grid">
+      <div className={styles.grid}>
         {subscriptions.map((subscription, index) => {
           const nextDate = getNextExpectedDate(subscription)
 
           return (
             <div
               key={`${subscription.payeeName}-${index}`}
-              className="subscription-card"
+              className={styles.card}
             >
-              <div className="subscription-header">
-                <h3 className="subscription-name">{subscription.payeeName}</h3>
-                <div className="subscription-amount-info">
-                  <div className="subscription-amount">
+              <div className={styles.header}>
+                <h3 className={styles.name}>{subscription.payeeName}</h3>
+                <div className={styles.amountInfo}>
+                  <div className={styles.amount}>
                     {formatCurrency(subscription.averageAmount, currencySymbol)}
                   </div>
-                  <div className="subscription-frequency">
+                  <div className={styles.frequency}>
                     {subscription.frequency}
                   </div>
                 </div>
               </div>
 
-              <div className="subscription-details">
-                <div className="subscription-detail-item">
-                  <span className="subscription-label">Confidence:</span>
-                  <div className="subscription-confidence">
-                    <div className="confidence-bar">
+              <div className={styles.details}>
+                <div className={styles.detailItem}>
+                  <span className={styles.label}>Confidence:</span>
+                  <div className={styles.confidence}>
+                    <div className={styles.confidenceBar}>
                       <div
-                        className={`confidence-fill ${
+                        className={`${styles.confidenceFill} ${
                           subscription.confidence > 0.8
-                            ? 'confidence-high'
+                            ? styles.confidenceHigh
                             : subscription.confidence > 0.6
-                              ? 'confidence-medium'
-                              : 'confidence-low'
+                              ? styles.confidenceMedium
+                              : styles.confidenceLow
                         }`}
                         style={{ width: `${subscription.confidence * 100}%` }}
                       />
                     </div>
-                    <span className="confidence-text">
+                    <span className={styles.confidenceText}>
                       {Math.round(subscription.confidence * 100)}%
                     </span>
                   </div>
                 </div>
 
-                <div className="subscription-detail-item">
-                  <span className="subscription-label">Last Payment:</span>
-                  <div className="subscription-value">
+                <div className={styles.detailItem}>
+                  <span className={styles.label}>Last Payment:</span>
+                  <div className={styles.value}>
                     {new Date(
                       subscription.lastTransactionDate
                     ).toLocaleDateString()}
@@ -81,28 +91,28 @@ export function SubscriptionList({
                 </div>
 
                 {nextDate && (
-                  <div className="subscription-detail-item">
-                    <span className="subscription-label">Next Expected:</span>
-                    <div className="subscription-value">
+                  <div className={styles.detailItem}>
+                    <span className={styles.label}>Next Expected:</span>
+                    <div className={styles.value}>
                       {new Date(nextDate).toLocaleDateString()}
                     </div>
                   </div>
                 )}
               </div>
 
-              <div className="subscription-footer">
-                <div className="subscription-meta">
-                  <span className="subscription-meta-item">
+              <div className={styles.footer}>
+                <div className={styles.meta}>
+                  <span className={styles.metaItem}>
                     {subscription.amounts.length} transactions
                   </span>
-                  <span className="subscription-separator">•</span>
-                  <span className="subscription-meta-item">
+                  <span className={styles.separator}>•</span>
+                  <span className={styles.metaItem}>
                     Accounts: {subscription.accountNames.join(', ')}
                   </span>
                   {subscription.amounts.length > 1 && (
                     <>
-                      <span className="subscription-separator">•</span>
-                      <span className="subscription-meta-item">
+                      <span className={styles.separator}>•</span>
+                      <span className={styles.metaItem}>
                         Range:{' '}
                         {formatCurrency(
                           Math.min(...subscription.amounts),
