@@ -11,30 +11,37 @@ export function useYnabAuth() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
 
   useEffect(() => {
+    
     // Check for token in URL fragment
     const urlToken = parseTokenFromUrl()
+    
     if (urlToken) {
+      
       setTokenInfo(urlToken)
-      setIsAuthenticated(isTokenValid(urlToken))
+      const valid = isTokenValid(urlToken)
+      setIsAuthenticated(valid)
       clearTokenFromUrl()
       return
     }
 
     // Check for existing token in sessionStorage
     const storedToken = sessionStorage.getItem('ynab_token')
+    
     if (storedToken) {
       try {
         const parsed = JSON.parse(storedToken) as YnabTokenInfo
-        if (isTokenValid(parsed)) {
+        const valid = isTokenValid(parsed)
+        
+        if (valid) {
           setTokenInfo(parsed)
           setIsAuthenticated(true)
         } else {
           sessionStorage.removeItem('ynab_token')
         }
       } catch (error) {
-        console.error('Error parsing stored token:', error)
         sessionStorage.removeItem('ynab_token')
       }
+    } else {
     }
   }, [])
 

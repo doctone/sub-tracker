@@ -7,21 +7,30 @@ export interface YnabTokenInfo {
 
 export function parseTokenFromUrl(): YnabTokenInfo | null {
   const fragment = window.location.hash.substring(1)
-  if (!fragment) return null
+  
+  if (!fragment) {
+    return null
+  }
 
   const params = new URLSearchParams(fragment)
   const accessToken = params.get('access_token')
   const tokenType = params.get('token_type')
   const expiresIn = params.get('expires_in')
 
-  if (!accessToken || !tokenType || !expiresIn) return null
 
-  return {
+  if (!accessToken || !tokenType || !expiresIn) {
+    return null
+  }
+
+  const tokenInfo = {
     accessToken,
     tokenType,
     expiresIn: parseInt(expiresIn, 10),
     expiresAt: Date.now() + parseInt(expiresIn, 10) * 1000,
   }
+  
+
+  return tokenInfo
 }
 
 export function clearTokenFromUrl(): void {
