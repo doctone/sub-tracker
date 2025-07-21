@@ -7,7 +7,6 @@ import {
   useSubscriptionAnalysis,
 } from '../hooks/useYnabQueries'
 import type { YnabBudget } from '../types/ynab'
-import { SubscriptionSummary } from './SubscriptionSummary'
 import { SubscriptionList } from './SubscriptionList'
 import styles from './YnabDashboard.module.css'
 
