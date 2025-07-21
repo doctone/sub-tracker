@@ -1,6 +1,7 @@
 export function YnabAuth() {
   const clientId = import.meta.env.VITE_YNAB_CLIENT_ID
-  const redirectUri = import.meta.env.VITE_YNAB_REDIRECT_URI || window.location.origin
+  const redirectUri =
+    import.meta.env.VITE_YNAB_REDIRECT_URI || window.location.origin
 
   return (
     <a
