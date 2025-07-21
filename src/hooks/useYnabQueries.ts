@@ -101,13 +101,14 @@ export function useRecentTransactions(
   monthsBack?: number
 ): UseQueryResult<YnabTransaction[], Error> {
   // If monthsBack is not provided or is 0, fetch all transactions (no sinceDate)
-  const sinceDateStr = monthsBack && monthsBack > 0 
-    ? (() => {
-        const sinceDate = new Date()
-        sinceDate.setMonth(sinceDate.getMonth() - monthsBack)
-        return sinceDate.toISOString().split('T')[0]
-      })()
-    : undefined
+  const sinceDateStr =
+    monthsBack && monthsBack > 0
+      ? (() => {
+          const sinceDate = new Date()
+          sinceDate.setMonth(sinceDate.getMonth() - monthsBack)
+          return sinceDate.toISOString().split('T')[0]
+        })()
+      : undefined
 
   return useTransactions(accessToken, budgetId, sinceDateStr)
 }
@@ -125,13 +126,14 @@ export function useSubscriptionAnalysis(
       }
 
       // If monthsBack is not provided or is 0, fetch all transactions (no sinceDate)
-      const sinceDateStr = monthsBack && monthsBack > 0 
-        ? (() => {
-            const sinceDate = new Date()
-            sinceDate.setMonth(sinceDate.getMonth() - monthsBack)
-            return sinceDate.toISOString().split('T')[0]
-          })()
-        : undefined
+      const sinceDateStr =
+        monthsBack && monthsBack > 0
+          ? (() => {
+              const sinceDate = new Date()
+              sinceDate.setMonth(sinceDate.getMonth() - monthsBack)
+              return sinceDate.toISOString().split('T')[0]
+            })()
+          : undefined
 
       const client = new YnabApiClient(accessToken)
       const response: YnabTransactionsResponse = await client.getTransactions(

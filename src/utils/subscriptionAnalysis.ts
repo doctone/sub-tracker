@@ -84,16 +84,16 @@ export function analyzeSubscriptions(
     if (b.confidence !== a.confidence) {
       return b.confidence - a.confidence
     }
-    
+
     // If confidence is equal, sort by next renewal date
     const nextDateA = getNextExpectedDate(a)
     const nextDateB = getNextExpectedDate(b)
-    
+
     // Handle null dates (put them last)
     if (!nextDateA && !nextDateB) return 0
     if (!nextDateA) return 1
     if (!nextDateB) return -1
-    
+
     // Sort by date (earliest first)
     return new Date(nextDateA).getTime() - new Date(nextDateB).getTime()
   })
