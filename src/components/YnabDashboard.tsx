@@ -14,7 +14,6 @@ export function YnabDashboard() {
   const { isAuthenticated, accessToken, logout } = useYnabAuth()
   const [selectedBudget, setSelectedBudget] = useState<YnabBudget | null>(null)
 
-
   // Use TanStack Query hooks
   const {
     data: budgets = [],
