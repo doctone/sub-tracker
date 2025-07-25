@@ -1,132 +1,287 @@
-/* Subscription Summary Styles - Dark Mode */
-.summary {
-  margin-top: 1.5rem;
-  padding: 1.5rem 0;
+.container {
+  width: 100%;
+  padding: 2rem 1rem;
 }
 
-.empty {
-  color: #9ca3af;
-  text-align: center;
-  padding: 2rem;
-  background: #1f2937;
-  border-radius: 8px;
-  border: 1px solid #374151;
+.header {
+  margin-bottom: 2rem;
 }
 
 .title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #f9fafb;
-  margin: 0 0 2rem 0;
-  text-align: left;
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--foreground);
 }
 
-.content {
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 0;
+}
+
+.illustration {
+  margin-bottom: 1.5rem;
+  animation: floatY 3s ease-in-out infinite alternate;
+}
+
+.emptyTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--foreground);
+}
+
+.emptyText {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  text-align: center;
+  max-width: 28rem;
+}
+
+.summarySection {
+  margin-bottom: 1.5rem;
+}
+
+.summaryCards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+.summaryCard {
+  background: var(--popover);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.summaryValue {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.detailSection {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  margin-bottom: 2rem;
 }
 
-.section {
+.detailCard {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-xs);
+}
+
+.detailCardTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+
+.spendingGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .spendingGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.metricLabel {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+}
+
+.metricValue {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--foreground);
+}
+
+.confidenceList {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.sectionTitle {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #667eea;
-  margin: 0;
+.confidenceItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.text {
-  color: #d1d5db;
-  line-height: 1.6;
-  margin: 0;
+.confidenceLabel {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
 }
 
-.text strong {
-  color: #f9fafb;
+.confidenceValue {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.confidenceCount {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.confidenceDot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+}
+
+.confidenceDotHigh {
+  background: var(--secondary);
+}
+
+.confidenceDotMedium {
+  background: var(--destructive);
+}
+
+.confidenceDotLow {
+  background: var(--muted);
+}
+
+.topSubscriptionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.topSubscriptionItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.topSubscriptionInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.topSubscriptionAvatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+  background: var(--popover);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.topSubscriptionAvatarText {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.topSubscriptionName {
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.topSubscriptionFrequency {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  text-transform: capitalize;
+}
+
+.topSubscriptionAmount {
   font-weight: 600;
+  color: var(--foreground);
 }
 
 .actions {
   display: flex;
-  justify-content: flex-start;
-  margin-top: 1.5rem;
+  gap: 0.75rem;
 }
 
-.toggle {
-  background: transparent;
-  color: #667eea;
-  border: 1px solid #667eea;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  font-weight: 500;
+.primaryButton {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border-radius: calc(var(--radius) - 2px);
+  font-weight: 600;
+  padding: 0.5rem 1.25rem;
+  box-shadow: var(--shadow-xs);
+  transition:
+    background 0.2s,
+    box-shadow 0.2s;
+  border: none;
   cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 0.9rem;
+  position: relative;
+  overflow: hidden;
 }
 
-.toggle:hover {
-  background: #667eea;
-  color: white;
+.primaryButton:hover {
+  box-shadow: var(--shadow-md);
 }
 
-.toggle:active {
-  transform: translateY(0);
+.primaryButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@keyframes floatY {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-12px);
+  }
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .summary {
-    padding: 1rem 0;
+  .container {
+    padding: 1rem;
   }
 
   .title {
-    font-size: 1.25rem;
-    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
   }
 
-  .text {
-    font-size: 0.9rem;
+  .summaryCards {
+    gap: 0.75rem;
   }
 
-  .content {
-    gap: 1.25rem;
+  .detailCard {
+    padding: 1rem;
+  }
+
+  .detailCardTitle {
+    font-size: 1rem;
   }
 }
 
 @media (max-width: 480px) {
-  .summary {
-    margin-top: 1rem;
-    padding: 0.5rem 0;
-  }
-
   .title {
-    font-size: 1.1rem;
-    margin-bottom: 1rem;
+    font-size: 1.25rem;
   }
 
-  .content {
-    gap: 1rem;
-  }
-
-  .section {
-    gap: 0.25rem;
-  }
-
-  .sectionTitle {
-    font-size: 0.95rem;
-  }
-
-  .text {
-    font-size: 0.85rem;
-  }
-
-  .toggle {
+  .summaryCard {
+    font-size: 0.8rem;
     padding: 0.5rem 0.75rem;
-    font-size: 0.85rem;
+  }
+
+  .detailSection {
+    gap: 1rem;
   }
 }

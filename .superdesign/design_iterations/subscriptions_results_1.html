@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Subscriptions</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Inter:400,600,700&display=swap"
+    />
+    <link rel="stylesheet" href="subscriptions_theme_dark.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.0.0/dist/flowbite.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <style>
+      /* Animations */
+      .fade-slide-in {
+        opacity: 0;
+        transform: translateY(32px);
+        animation: fadeSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      }
+      @keyframes fadeSlideIn {
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      .float-illustration {
+        animation: floatY 3s ease-in-out infinite alternate;
+      }
+      @keyframes floatY {
+        from {
+          transform: translateY(0);
+        }
+        to {
+          transform: translateY(-12px);
+        }
+      }
+      .button-primary:active {
+        transform: scale(0.96);
+      }
+      .button-primary:focus {
+        outline: 2px solid var(--ring);
+        outline-offset: 2px;
+      }
+      .ripple {
+        position: absolute;
+        border-radius: 9999px;
+        background: var(--accent);
+        opacity: 0.3;
+        pointer-events: none;
+        animation: ripple-effect 0.4s linear;
+      }
+      @keyframes ripple-effect {
+        from {
+          transform: scale(0);
+          opacity: 0.3;
+        }
+        to {
+          transform: scale(2);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body class="min-h-screen flex flex-col bg-[oklch(0.15_0_0)]">
+    <main class="max-w-2xl w-full mx-auto px-4 py-8 flex-1">
+      <!-- Header -->
+      <header class="mb-8">
+        <h1 class="text-3xl font-bold mb-2">Your Subscriptions</h1>
+        <div
+          class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center"
+        >
+          <input
+            type="text"
+            class="input w-full sm:w-72"
+            placeholder="Search subscriptions..."
+          />
+          <select
+            class="input w-full sm:w-40"
+            aria-label="Filter subscriptions"
+          >
+            <option>All</option>
+            <option>Active</option>
+            <option>Expired</option>
+          </select>
+        </div>
+      </header>
+      <!-- Summary -->
+      <section class="mb-6">
+        <div class="flex flex-wrap gap-4 items-center">
+          <div
+            class="bg-[oklch(0.18_0_0)] rounded-lg px-4 py-2 text-sm font-medium"
+          >
+            <span class="text-[oklch(0.72_0.18_260)] font-bold">7</span>
+            subscriptions
+          </div>
+          <div
+            class="bg-[oklch(0.18_0_0)] rounded-lg px-4 py-2 text-sm font-medium"
+          >
+            <span class="text-[oklch(0.72_0.18_260)] font-bold">$128</span> /
+            month
+          </div>
+        </div>
+      </section>
+      <!-- Subscriptions List -->
+      <section class="space-y-4">
+        <!-- Subscription Card Example -->
+        <div class="card fade-slide-in relative flex items-center gap-4">
+          <img
+            src="https://logo.clearbit.com/netflix.com"
+            alt="Netflix"
+            class="w-12 h-12 rounded-lg bg-black object-contain"
+          />
+          <div class="flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-lg font-semibold">Netflix</span>
+              <span
+                class="text-xs bg-[oklch(0.28_0.04_120)] text-[oklch(0.98_0_0)] rounded px-2 py-0.5 ml-1"
+                >Standard</span
+              >
+            </div>
+            <div class="text-sm text-[oklch(0.65_0_0)] mt-1">
+              $15.99/mo &middot; Next: Jul 12, 2024
+            </div>
+          </div>
+          <button
+            class="button-primary relative overflow-hidden"
+            onclick="showRipple(event)"
+          >
+            Manage
+          </button>
+        </div>
+        <div
+          class="card fade-slide-in relative flex items-center gap-4"
+          style="animation-delay: 0.05s"
+        >
+          <img
+            src="https://logo.clearbit.com/spotify.com"
+            alt="Spotify"
+            class="w-12 h-12 rounded-lg bg-black object-contain"
+          />
+          <div class="flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-lg font-semibold">Spotify</span>
+              <span
+                class="text-xs bg-[oklch(0.28_0.04_120)] text-[oklch(0.98_0_0)] rounded px-2 py-0.5 ml-1"
+                >Family</span
+              >
+            </div>
+            <div class="text-sm text-[oklch(0.65_0_0)] mt-1">
+              $14.99/mo &middot; Next: Jul 20, 2024
+            </div>
+          </div>
+          <button
+            class="button-primary relative overflow-hidden"
+            onclick="showRipple(event)"
+          >
+            Manage
+          </button>
+        </div>
+        <div
+          class="card fade-slide-in relative flex items-center gap-4"
+          style="animation-delay: 0.1s"
+        >
+          <img
+            src="https://logo.clearbit.com/adobe.com"
+            alt="Adobe"
+            class="w-12 h-12 rounded-lg bg-black object-contain"
+          />
+          <div class="flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-lg font-semibold">Adobe CC</span>
+              <span
+                class="text-xs bg-[oklch(0.28_0.04_120)] text-[oklch(0.98_0_0)] rounded px-2 py-0.5 ml-1"
+                >All Apps</span
+              >
+            </div>
+            <div class="text-sm text-[oklch(0.65_0_0)] mt-1">
+              $52.99/mo &middot; Next: Jul 18, 2024
+            </div>
+          </div>
+          <button
+            class="button-primary relative overflow-hidden"
+            onclick="showRipple(event)"
+          >
+            Manage
+          </button>
+        </div>
+        <!-- More cards... -->
+      </section>
+      <!-- Empty State Example (hidden by default) -->
+      <section
+        id="empty-state"
+        class="hidden flex flex-col items-center justify-center py-16"
+      >
+        <svg
+          class="float-illustration mb-6"
+          width="96"
+          height="96"
+          fill="none"
+          viewBox="0 0 96 96"
+        >
+          <rect width="96" height="96" rx="20" fill="#23232B" />
+          <rect x="20" y="36" width="56" height="32" rx="6" fill="#353545" />
+          <rect x="28" y="44" width="40" height="8" rx="2" fill="#44445A" />
+          <rect x="28" y="56" width="24" height="4" rx="2" fill="#44445A" />
+        </svg>
+        <div class="text-lg font-semibold mb-2">No subscriptions found.</div>
+        <button class="button-primary" onclick="alert('Add Subscription')">
+          Add Subscription
+        </button>
+      </section>
+      <!-- Actions -->
+      <div class="flex gap-3 mt-10">
+        <button
+          class="button-primary flex items-center gap-2"
+          onclick="alert('Add Subscription')"
+        >
+          <i data-lucide="plus"></i> Add Subscription
+        </button>
+        <button
+          class="button-primary flex items-center gap-2"
+          onclick="alert('Export')"
+        >
+          <i data-lucide="download"></i> Export
+        </button>
+      </div>
+    </main>
+    <script>
+      // Lucide icons
+      lucide.createIcons()
+      // Ripple effect for buttons
+      function showRipple(e) {
+        const btn = e.currentTarget
+        const circle = document.createElement('span')
+        const diameter = Math.max(btn.clientWidth, btn.clientHeight)
+        const rect = btn.getBoundingClientRect()
+        circle.classList.add('ripple')
+        circle.style.width = circle.style.height = `${diameter}px`
+        circle.style.left = `${e.clientX - rect.left - diameter / 2}px`
+        circle.style.top = `${e.clientY - rect.top - diameter / 2}px`
+        btn.appendChild(circle)
+        circle.addEventListener('animationend', () => circle.remove())
+      }
+    </script>
+  </body>
+</html>

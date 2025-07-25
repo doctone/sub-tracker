@@ -7,6 +7,7 @@ An application that helps users track their subscriptions by connecting directly
 ## Tech Stack
 
 - **Frontend**: Vite + React
+- **Styling**: CSS Modules for component-scoped styles
 - **Testing**: Vitest
 - **API Integration**: YNAB API
 - **TypeScript**: Required for all code
@@ -36,7 +37,17 @@ An application that helps users track their subscriptions by connecting directly
 - Implement proper error boundaries
 - Use proper loading and error states
 
-### 4. YNAB API Integration Features
+### 4. CSS Modules Guidelines
+
+- **Component-scoped styling**: Use CSS Modules (.module.css) for all component styles
+- **Import pattern**: `import styles from './Component.module.css'`
+- **Class naming**: Use camelCase for CSS class names (e.g., `.primaryButton`, `.headerSection`)
+- **Design system**: Leverage CSS custom properties (CSS variables) defined in `index.css`
+- **No global styles**: Avoid global CSS classes except for design system variables and base styles
+- **Responsive design**: Use CSS Grid and Flexbox with proper media queries within modules
+- **No inline styles**: Prefer CSS modules over inline styles for maintainability
+
+### 5. YNAB API Integration Features
 
 - Secure handling of YNAB OAuth tokens
 - Privacy-first approach - no unnecessary data retention
@@ -44,7 +55,7 @@ An application that helps users track their subscriptions by connecting directly
 - Rate limiting and retry logic for API requests
 - Respect YNAB API usage limits and best practices
 
-### 5. Testing Strategy
+### 6. Testing Strategy
 
 - Unit tests for utility functions
 - Component tests for React components
@@ -52,7 +63,7 @@ An application that helps users track their subscriptions by connecting directly
 - Mock external APIs (YNAB API calls)
 - Test error scenarios and edge cases
 
-### 6. Build Process
+### 7. Build Process
 
 - Build command: `pnpm run build`
 - Ensure zero TypeScript errors

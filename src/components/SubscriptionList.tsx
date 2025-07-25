@@ -1,9 +1,6 @@
-import {
-  formatCurrency,
-  getNextExpectedDate,
-} from '../utils/subscriptionAnalysis'
-import type { SubscriptionPattern } from '../utils/subscriptionAnalysis'
 import styles from './SubscriptionList.module.css'
+import type { SubscriptionPattern } from '../utils/subscriptionAnalysis'
+import { SubscriptionItem } from './SubscriptionItem'
 
 interface SubscriptionListProps {
   subscriptions: SubscriptionPattern[]
@@ -18,93 +15,57 @@ export function SubscriptionList({
 }: SubscriptionListProps) {
   if (subscriptions.length === 0) {
     return (
-      <div className={styles.container}>
-        <div className={styles.summary}>
-          Based on {transactionCount} transactions analysed
+      <main className={styles.container}>
+        <div className={styles.analysisInfo}>
+          <div className={styles.analysisCard}>
+            Based on{' '}
+            <span className={styles.analysisValue}>{transactionCount}</span>{' '}
+            transactions analysed
+          </div>
         </div>
-        <div className={styles.empty}>
-          No subscription patterns found. Try adding more historical data by
-          increasing the analysis period.
-        </div>
-      </div>
+        <section className={styles.emptyState}>
+          <svg
+            className={styles.illustration}
+            width="96"
+            height="96"
+            fill="none"
+            viewBox="0 0 96 96"
+          >
+            <rect width="96" height="96" rx="20" fill="#23232B" />
+            <rect x="20" y="36" width="56" height="32" rx="6" fill="#353545" />
+            <rect x="28" y="44" width="40" height="8" rx="2" fill="#44445A" />
+            <rect x="28" y="56" width="24" height="4" rx="2" fill="#44445A" />
+          </svg>
+          <div className={styles.emptyTitle}>No subscriptions found.</div>
+          <div className={styles.emptyText}>
+            No subscription patterns found. Try adding more historical data by
+            increasing the analysis period.
+          </div>
+        </section>
+      </main>
     )
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.summary}>
-        Based on {transactionCount} transactions analysed
+    <main className={styles.container}>
+      <div className={styles.analysisInfo}>
+        <div className={styles.analysisCard}>
+          Based on{' '}
+          <span className={styles.analysisValue}>{transactionCount}</span>{' '}
+          transactions analysed
+        </div>
       </div>
 
-      <div className={styles.tableContainer}>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>Subscription</th>
-              <th className={styles.hideOnSmall}>Confidence</th>
-              <th className={styles.hideOnSmall}>Frequency</th>
-              <th>Cost ( est )</th>
-              <th>Next Renewal</th>
-            </tr>
-          </thead>
-          <tbody>
-            {subscriptions.map((subscription, index) => {
-              const nextDate = getNextExpectedDate(subscription)
-              const confidencePercent = Math.round(
-                subscription.confidence * 100
-              )
-              const isRenewalPast = nextDate
-                ? new Date(nextDate) < new Date()
-                : false
-
-              return (
-                <tr
-                  key={`${subscription.payeeName}-${index}`}
-                  className={isRenewalPast ? styles.rowPast : ''}
-                >
-                  <td className={styles.nameCell}>{subscription.payeeName}</td>
-                  <td
-                    className={`${styles.confidenceCell} ${styles.hideOnSmall}`}
-                  >
-                    <span
-                      className={`${styles.confidenceBadge} ${
-                        subscription.confidence > 0.8
-                          ? styles.confidenceHigh
-                          : subscription.confidence > 0.6
-                            ? styles.confidenceMedium
-                            : styles.confidenceLow
-                      }`}
-                    >
-                      {confidencePercent}%
-                    </span>
-                  </td>
-                  <td
-                    className={`${styles.frequencyCell} ${styles.hideOnSmall}`}
-                  >
-                    {subscription.frequency === 'monthly'
-                      ? 'Monthly'
-                      : subscription.frequency === 'yearly'
-                        ? 'Annual'
-                        : subscription.frequency === 'weekly'
-                          ? 'Weekly'
-                          : 'Unknown'}
-                  </td>
-                  <td className={styles.costCell}>
-                    {formatCurrency(subscription.averageAmount, currencySymbol)}
-                  </td>
-                  <td
-                    className={`${styles.renewalCell} ${isRenewalPast ? styles.renewalPast : ''}`}
-                  >
-                    {nextDate
-                      ? new Date(nextDate).toLocaleDateString()
-                      : 'Unknown'}
-                  </td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-      </div>
-    </div>
+      <section className={styles.subscriptionsList}>
+        {subscriptions.map((subscription, index) => (
+          <SubscriptionItem
+            key={`${subscription.payeeName}-${index}`}
+            subscription={subscription}
+            currencySymbol={currencySymbol}
+            index={index}
+          />
+        ))}
+      </section>
+    </main>
   )
 }

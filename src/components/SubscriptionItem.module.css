@@ -1,0 +1,171 @@
+.subscriptionItem {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-xs);
+  transition: all 0.2s ease;
+  animation: fadeSlideIn 0.5s ease-out forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.subscriptionItem:hover {
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-2px);
+}
+
+.subscriptionItemPast {
+  opacity: 0.7;
+}
+
+.logoContainer {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.5rem;
+  background: #000;
+  object-fit: contain;
+}
+
+.logoFallback {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.5rem;
+  background: #000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoFallbackText {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0.5rem 0;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+
+.nameSection {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.name {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.confidenceBadge {
+  font-size: 0.75rem;
+  border-radius: 0.25rem;
+  padding: 0.125rem 0.5rem;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.confidenceHigh {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+}
+
+.confidenceMedium {
+  background: var(--destructive);
+  color: var(--destructive-foreground);
+}
+
+.confidenceLow {
+  background: var(--muted);
+  color: var(--muted-foreground);
+}
+
+.details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.875rem;
+}
+
+.price {
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+.frequency {
+  color: var(--muted-foreground);
+  font-weight: 400;
+}
+
+.nextDate {
+  text-align: right;
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+}
+
+.nextDateOverdue {
+  color: var(--destructive);
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .subscriptionItem {
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+
+  .logo,
+  .logoFallback {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .logoFallbackText {
+    font-size: 1rem;
+  }
+
+  .name {
+    font-size: 1rem;
+  }
+
+  .details {
+    font-size: 0.8rem;
+  }
+}
