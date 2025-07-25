@@ -1,267 +1,367 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Subscription Management Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/flowbite@2.0.0/dist/flowbite.min.js"></script>
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <link rel="stylesheet" href="./theme_subscription_dashboard_1.css">
-  <style>
-    html, body {
-      font-family: 'Inter', 'Roboto', 'Geist', sans-serif !important;
-      background: var(--background) !important;
-      color: var(--foreground) !important;
-      min-height: 100vh;
-    }
-    .card {
-      background: var(--card) !important;
-      color: var(--card-foreground) !important;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
-    .summary-card {
-      transition: box-shadow 0.3s, transform 0.3s;
-      box-shadow: var(--shadow-sm);
-    }
-    .summary-card:hover {
-      box-shadow: var(--shadow-lg);
-      transform: translateY(-4px) scale(1.02);
-    }
-    .fade-in {
-      animation: fadeInUp 0.3s ease-out;
-    }
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .alert {
-      animation: slideDown 0.35s ease-out;
-    }
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .row-fade-in {
-      animation: rowFadeIn 0.25s ease-out;
-    }
-    @keyframes rowFadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    .insight-card:hover {
-      box-shadow: var(--shadow-lg);
-      transform: translateY(-2px);
-      transition: box-shadow 0.18s, transform 0.18s;
-    }
-    .btn {
-      transition: box-shadow 0.12s, transform 0.12s;
-    }
-    .btn:hover {
-      transform: scale(1.04);
-      box-shadow: var(--shadow-md);
-    }
-    .btn:active {
-      transform: scale(0.98);
-      box-shadow: var(--shadow-sm);
-    }
-    .row:hover {
-      background: var(--muted) !important;
-      box-shadow: var(--shadow-sm);
-      transition: background 0.15s, box-shadow 0.15s;
-    }
-    .status-active { color: var(--primary); font-weight: 600; }
-    .status-trial { color: var(--accent); }
-    .status-canceled { color: var(--muted-foreground); text-decoration: line-through; }
-    .budget-impact { font-weight: 500; }
-    .alert-expiring { color: var(--destructive); }
-    .alert-savings { color: var(--primary); }
-    .alert-upcoming { color: var(--accent); }
-    .dark-mode {
-      background: #181a1b !important;
-      color: #f3f4f6 !important;
-    }
-  </style>
-</head>
-<body class="min-h-screen flex flex-col">
-  <!-- Header -->
-  <header class="flex items-center justify-between px-6 py-4 border-b" style="border-color: var(--border);">
-    <div class="flex items-center gap-3">
-      <span class="text-xl font-bold tracking-tight">SubTrack Pro</span>
-      <span class="px-2 py-1 rounded text-xs font-medium" style="background: var(--muted); color: var(--muted-foreground);">with YNAB</span>
-    </div>
-    <div class="flex items-center gap-4">
-      <span class="flex items-center gap-1 text-sm" title="YNAB Sync Status">
-        <i data-lucide="link" class="w-4 h-4"></i>
-        <span class="font-medium">Synced</span>
-      </span>
-      <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" class="w-8 h-8 rounded-full border" />
-    </div>
-  </header>
-
-  <!-- Summary Cards -->
-  <section class="grid grid-cols-1 sm:grid-cols-3 gap-4 px-6 py-4 fade-in">
-    <div class="card summary-card p-4 flex flex-col gap-2">
-      <span class="text-sm text-muted-foreground">Monthly Spend</span>
-      <span class="text-2xl font-semibold">$245</span>
-    </div>
-    <div class="card summary-card p-4 flex flex-col gap-2">
-      <span class="text-sm text-muted-foreground">Yearly Spend</span>
-      <span class="text-2xl font-semibold">$2,940</span>
-    </div>
-    <div class="card summary-card p-4 flex flex-col gap-2">
-      <span class="text-sm text-muted-foreground">Recent Changes</span>
-      <span class="text-base">+2 new, 1 price increase</span>
-    </div>
-  </section>
-
-  <!-- Notifications/Alerts -->
-  <section class="px-6 fade-in">
-    <div class="flex flex-col gap-2">
-      <div class="alert card p-3 flex items-center gap-2 alert-upcoming">
-        <i data-lucide="clock" class="w-4 h-4"></i>
-        <span>Spotify renews in 3 days</span>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Subscription Management Dashboard</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.0.0/dist/flowbite.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <link rel="stylesheet" href="./theme_subscription_dashboard_1.css" />
+    <style>
+      html,
+      body {
+        font-family: 'Inter', 'Roboto', 'Geist', sans-serif !important;
+        background: var(--background) !important;
+        color: var(--foreground) !important;
+        min-height: 100vh;
+      }
+      .card {
+        background: var(--card) !important;
+        color: var(--card-foreground) !important;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+      .summary-card {
+        transition:
+          box-shadow 0.3s,
+          transform 0.3s;
+        box-shadow: var(--shadow-sm);
+      }
+      .summary-card:hover {
+        box-shadow: var(--shadow-lg);
+        transform: translateY(-4px) scale(1.02);
+      }
+      .fade-in {
+        animation: fadeInUp 0.3s ease-out;
+      }
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .alert {
+        animation: slideDown 0.35s ease-out;
+      }
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .row-fade-in {
+        animation: rowFadeIn 0.25s ease-out;
+      }
+      @keyframes rowFadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      .insight-card:hover {
+        box-shadow: var(--shadow-lg);
+        transform: translateY(-2px);
+        transition:
+          box-shadow 0.18s,
+          transform 0.18s;
+      }
+      .btn {
+        transition:
+          box-shadow 0.12s,
+          transform 0.12s;
+      }
+      .btn:hover {
+        transform: scale(1.04);
+        box-shadow: var(--shadow-md);
+      }
+      .btn:active {
+        transform: scale(0.98);
+        box-shadow: var(--shadow-sm);
+      }
+      .row:hover {
+        background: var(--muted) !important;
+        box-shadow: var(--shadow-sm);
+        transition:
+          background 0.15s,
+          box-shadow 0.15s;
+      }
+      .status-active {
+        color: var(--primary);
+        font-weight: 600;
+      }
+      .status-trial {
+        color: var(--accent);
+      }
+      .status-canceled {
+        color: var(--muted-foreground);
+        text-decoration: line-through;
+      }
+      .budget-impact {
+        font-weight: 500;
+      }
+      .alert-expiring {
+        color: var(--destructive);
+      }
+      .alert-savings {
+        color: var(--primary);
+      }
+      .alert-upcoming {
+        color: var(--accent);
+      }
+      .dark-mode {
+        background: #181a1b !important;
+        color: #f3f4f6 !important;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <!-- Header -->
+    <header
+      class="flex items-center justify-between px-6 py-4 border-b"
+      style="border-color: var(--border)"
+    >
+      <div class="flex items-center gap-3">
+        <span class="text-xl font-bold tracking-tight">SubTrack Pro</span>
+        <span
+          class="px-2 py-1 rounded text-xs font-medium"
+          style="background: var(--muted); color: var(--muted-foreground)"
+          >with YNAB</span
+        >
       </div>
-      <div class="alert card p-3 flex items-center gap-2 alert-expiring">
-        <i data-lucide="alert-triangle" class="w-4 h-4"></i>
-        <span>Disney+ trial expires soon</span>
+      <div class="flex items-center gap-4">
+        <span class="flex items-center gap-1 text-sm" title="YNAB Sync Status">
+          <i data-lucide="link" class="w-4 h-4"></i>
+          <span class="font-medium">Synced</span>
+        </span>
+        <img
+          src="https://randomuser.me/api/portraits/men/32.jpg"
+          alt="User"
+          class="w-8 h-8 rounded-full border"
+        />
       </div>
-      <div class="alert card p-3 flex items-center gap-2 alert-savings">
-        <i data-lucide="piggy-bank" class="w-4 h-4"></i>
-        <span>Save $24/year by switching Netflix to annual</span>
+    </header>
+
+    <!-- Summary Cards -->
+    <section class="grid grid-cols-1 sm:grid-cols-3 gap-4 px-6 py-4 fade-in">
+      <div class="card summary-card p-4 flex flex-col gap-2">
+        <span class="text-sm text-muted-foreground">Monthly Spend</span>
+        <span class="text-2xl font-semibold">$245</span>
       </div>
-    </div>
-  </section>
+      <div class="card summary-card p-4 flex flex-col gap-2">
+        <span class="text-sm text-muted-foreground">Yearly Spend</span>
+        <span class="text-2xl font-semibold">$2,940</span>
+      </div>
+      <div class="card summary-card p-4 flex flex-col gap-2">
+        <span class="text-sm text-muted-foreground">Recent Changes</span>
+        <span class="text-base">+2 new, 1 price increase</span>
+      </div>
+    </section>
 
-  <!-- Filter/Search Bar -->
-  <section class="px-6 py-4 flex flex-col sm:flex-row gap-3 items-start sm:items-center fade-in">
-    <input type="text" placeholder="Search subscriptions..." class="w-full sm:w-64 px-3 py-2 border rounded focus:ring-2 focus:ring-primary outline-none" style="border-color: var(--border);" />
-    <select class="px-3 py-2 border rounded" style="border-color: var(--border);">
-      <option>All Categories</option>
-      <option>Media</option>
-      <option>Productivity</option>
-      <option>Utilities</option>
-      <option>Other</option>
-    </select>
-    <select class="px-3 py-2 border rounded" style="border-color: var(--border);">
-      <option>Sort by: Renewal Date</option>
-      <option>Sort by: Cost</option>
-      <option>Sort by: Name</option>
-      <option>Sort by: Status</option>
-    </select>
-  </section>
-
-  <!-- Subscription Table/List -->
-  <main class="flex-1 px-6 pb-6 overflow-x-auto">
-    <div class="card p-0 overflow-hidden">
-      <table class="min-w-full text-sm">
-        <thead style="background: var(--muted);">
-          <tr>
-            <th class="px-4 py-2 text-left font-semibold">Service</th>
-            <th class="px-4 py-2 text-left font-semibold">Cost</th>
-            <th class="px-4 py-2 text-left font-semibold">Renewal</th>
-            <th class="px-4 py-2 text-left font-semibold">Category</th>
-            <th class="px-4 py-2 text-left font-semibold">Status</th>
-            <th class="px-4 py-2 text-left font-semibold">Budget Impact</th>
-            <th class="px-4 py-2 text-left font-semibold">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="row row-fade-in">
-            <td class="px-4 py-3 font-medium">Netflix</td>
-            <td class="px-4 py-3">$15/mo</td>
-            <td class="px-4 py-3">12/12/2024</td>
-            <td class="px-4 py-3">Media</td>
-            <td class="px-4 py-3 status-active">Active</td>
-            <td class="px-4 py-3 budget-impact">-$15 (Entertainment)</td>
-            <td class="px-4 py-3 flex gap-2">
-              <button class="btn px-2 py-1 rounded bg-muted text-xs">Edit</button>
-              <button class="btn px-2 py-1 rounded bg-destructive text-xs text-white">Cancel</button>
-            </td>
-          </tr>
-          <tr class="row row-fade-in">
-            <td class="px-4 py-3 font-medium">Spotify</td>
-            <td class="px-4 py-3">$10/mo</td>
-            <td class="px-4 py-3">06/10/2024</td>
-            <td class="px-4 py-3">Media</td>
-            <td class="px-4 py-3 status-active">Active</td>
-            <td class="px-4 py-3 budget-impact">-$10 (Entertainment)</td>
-            <td class="px-4 py-3 flex gap-2">
-              <button class="btn px-2 py-1 rounded bg-muted text-xs">Edit</button>
-              <button class="btn px-2 py-1 rounded bg-destructive text-xs text-white">Cancel</button>
-            </td>
-          </tr>
-          <tr class="row row-fade-in">
-            <td class="px-4 py-3 font-medium">Disney+</td>
-            <td class="px-4 py-3">$8/mo</td>
-            <td class="px-4 py-3">06/12/2024</td>
-            <td class="px-4 py-3">Media</td>
-            <td class="px-4 py-3 status-trial">Trial</td>
-            <td class="px-4 py-3 budget-impact">-$8 (Entertainment)</td>
-            <td class="px-4 py-3 flex gap-2">
-              <button class="btn px-2 py-1 rounded bg-muted text-xs">Edit</button>
-              <button class="btn px-2 py-1 rounded bg-destructive text-xs text-white">Cancel</button>
-            </td>
-          </tr>
-          <tr class="row row-fade-in">
-            <td class="px-4 py-3 font-medium">Notion</td>
-            <td class="px-4 py-3">$5/mo</td>
-            <td class="px-4 py-3">07/01/2024</td>
-            <td class="px-4 py-3">Productivity</td>
-            <td class="px-4 py-3 status-active">Active</td>
-            <td class="px-4 py-3 budget-impact">-$5 (Productivity)</td>
-            <td class="px-4 py-3 flex gap-2">
-              <button class="btn px-2 py-1 rounded bg-muted text-xs">Edit</button>
-              <button class="btn px-2 py-1 rounded bg-destructive text-xs text-white">Cancel</button>
-            </td>
-          </tr>
-          <tr class="row row-fade-in">
-            <td class="px-4 py-3 font-medium">Dropbox</td>
-            <td class="px-4 py-3">$12/mo</td>
-            <td class="px-4 py-3">06/20/2024</td>
-            <td class="px-4 py-3">Utilities</td>
-            <td class="px-4 py-3 status-canceled">Canceled</td>
-            <td class="px-4 py-3 budget-impact">-$0</td>
-            <td class="px-4 py-3 flex gap-2">
-              <button class="btn px-2 py-1 rounded bg-muted text-xs">Edit</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </main>
-
-  <!-- Actionable Insights -->
-  <section class="px-6 pb-8 fade-in">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div class="card insight-card p-4 flex flex-col gap-2">
-        <div class="flex items-center gap-2">
-          <i data-lucide="x-circle" class="w-5 h-5"></i>
-          <span class="font-semibold">Cancel unused subscriptions</span>
+    <!-- Notifications/Alerts -->
+    <section class="px-6 fade-in">
+      <div class="flex flex-col gap-2">
+        <div class="alert card p-3 flex items-center gap-2 alert-upcoming">
+          <i data-lucide="clock" class="w-4 h-4"></i>
+          <span>Spotify renews in 3 days</span>
         </div>
-        <span class="text-sm text-muted-foreground">You haven’t used Dropbox in 3 months.</span>
-      </div>
-      <div class="card insight-card p-4 flex flex-col gap-2">
-        <div class="flex items-center gap-2">
-          <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
-          <span class="font-semibold">Optimize your plans</span>
+        <div class="alert card p-3 flex items-center gap-2 alert-expiring">
+          <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+          <span>Disney+ trial expires soon</span>
         </div>
-        <span class="text-sm text-muted-foreground">Switch Netflix to annual and save $24/year.</span>
-      </div>
-      <div class="card insight-card p-4 flex flex-col gap-2">
-        <div class="flex items-center gap-2">
-          <i data-lucide="bell" class="w-5 h-5"></i>
-          <span class="font-semibold">Set renewal reminders</span>
+        <div class="alert card p-3 flex items-center gap-2 alert-savings">
+          <i data-lucide="piggy-bank" class="w-4 h-4"></i>
+          <span>Save $24/year by switching Netflix to annual</span>
         </div>
-        <span class="text-sm text-muted-foreground">Get notified before your next renewal.</span>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <script>
-    window.lucide && window.lucide.createIcons();
-  </script>
-</body>
+    <!-- Filter/Search Bar -->
+    <section
+      class="px-6 py-4 flex flex-col sm:flex-row gap-3 items-start sm:items-center fade-in"
+    >
+      <input
+        type="text"
+        placeholder="Search subscriptions..."
+        class="w-full sm:w-64 px-3 py-2 border rounded focus:ring-2 focus:ring-primary outline-none"
+        style="border-color: var(--border)"
+      />
+      <select
+        class="px-3 py-2 border rounded"
+        style="border-color: var(--border)"
+      >
+        <option>All Categories</option>
+        <option>Media</option>
+        <option>Productivity</option>
+        <option>Utilities</option>
+        <option>Other</option>
+      </select>
+      <select
+        class="px-3 py-2 border rounded"
+        style="border-color: var(--border)"
+      >
+        <option>Sort by: Renewal Date</option>
+        <option>Sort by: Cost</option>
+        <option>Sort by: Name</option>
+        <option>Sort by: Status</option>
+      </select>
+    </section>
+
+    <!-- Subscription Table/List -->
+    <main class="flex-1 px-6 pb-6 overflow-x-auto">
+      <div class="card p-0 overflow-hidden">
+        <table class="min-w-full text-sm">
+          <thead style="background: var(--muted)">
+            <tr>
+              <th class="px-4 py-2 text-left font-semibold">Service</th>
+              <th class="px-4 py-2 text-left font-semibold">Cost</th>
+              <th class="px-4 py-2 text-left font-semibold">Renewal</th>
+              <th class="px-4 py-2 text-left font-semibold">Category</th>
+              <th class="px-4 py-2 text-left font-semibold">Status</th>
+              <th class="px-4 py-2 text-left font-semibold">Budget Impact</th>
+              <th class="px-4 py-2 text-left font-semibold">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="row row-fade-in">
+              <td class="px-4 py-3 font-medium">Netflix</td>
+              <td class="px-4 py-3">$15/mo</td>
+              <td class="px-4 py-3">12/12/2024</td>
+              <td class="px-4 py-3">Media</td>
+              <td class="px-4 py-3 status-active">Active</td>
+              <td class="px-4 py-3 budget-impact">-$15 (Entertainment)</td>
+              <td class="px-4 py-3 flex gap-2">
+                <button class="btn px-2 py-1 rounded bg-muted text-xs">
+                  Edit
+                </button>
+                <button
+                  class="btn px-2 py-1 rounded bg-destructive text-xs text-white"
+                >
+                  Cancel
+                </button>
+              </td>
+            </tr>
+            <tr class="row row-fade-in">
+              <td class="px-4 py-3 font-medium">Spotify</td>
+              <td class="px-4 py-3">$10/mo</td>
+              <td class="px-4 py-3">06/10/2024</td>
+              <td class="px-4 py-3">Media</td>
+              <td class="px-4 py-3 status-active">Active</td>
+              <td class="px-4 py-3 budget-impact">-$10 (Entertainment)</td>
+              <td class="px-4 py-3 flex gap-2">
+                <button class="btn px-2 py-1 rounded bg-muted text-xs">
+                  Edit
+                </button>
+                <button
+                  class="btn px-2 py-1 rounded bg-destructive text-xs text-white"
+                >
+                  Cancel
+                </button>
+              </td>
+            </tr>
+            <tr class="row row-fade-in">
+              <td class="px-4 py-3 font-medium">Disney+</td>
+              <td class="px-4 py-3">$8/mo</td>
+              <td class="px-4 py-3">06/12/2024</td>
+              <td class="px-4 py-3">Media</td>
+              <td class="px-4 py-3 status-trial">Trial</td>
+              <td class="px-4 py-3 budget-impact">-$8 (Entertainment)</td>
+              <td class="px-4 py-3 flex gap-2">
+                <button class="btn px-2 py-1 rounded bg-muted text-xs">
+                  Edit
+                </button>
+                <button
+                  class="btn px-2 py-1 rounded bg-destructive text-xs text-white"
+                >
+                  Cancel
+                </button>
+              </td>
+            </tr>
+            <tr class="row row-fade-in">
+              <td class="px-4 py-3 font-medium">Notion</td>
+              <td class="px-4 py-3">$5/mo</td>
+              <td class="px-4 py-3">07/01/2024</td>
+              <td class="px-4 py-3">Productivity</td>
+              <td class="px-4 py-3 status-active">Active</td>
+              <td class="px-4 py-3 budget-impact">-$5 (Productivity)</td>
+              <td class="px-4 py-3 flex gap-2">
+                <button class="btn px-2 py-1 rounded bg-muted text-xs">
+                  Edit
+                </button>
+                <button
+                  class="btn px-2 py-1 rounded bg-destructive text-xs text-white"
+                >
+                  Cancel
+                </button>
+              </td>
+            </tr>
+            <tr class="row row-fade-in">
+              <td class="px-4 py-3 font-medium">Dropbox</td>
+              <td class="px-4 py-3">$12/mo</td>
+              <td class="px-4 py-3">06/20/2024</td>
+              <td class="px-4 py-3">Utilities</td>
+              <td class="px-4 py-3 status-canceled">Canceled</td>
+              <td class="px-4 py-3 budget-impact">-$0</td>
+              <td class="px-4 py-3 flex gap-2">
+                <button class="btn px-2 py-1 rounded bg-muted text-xs">
+                  Edit
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+
+    <!-- Actionable Insights -->
+    <section class="px-6 pb-8 fade-in">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="card insight-card p-4 flex flex-col gap-2">
+          <div class="flex items-center gap-2">
+            <i data-lucide="x-circle" class="w-5 h-5"></i>
+            <span class="font-semibold">Cancel unused subscriptions</span>
+          </div>
+          <span class="text-sm text-muted-foreground"
+            >You haven’t used Dropbox in 3 months.</span
+          >
+        </div>
+        <div class="card insight-card p-4 flex flex-col gap-2">
+          <div class="flex items-center gap-2">
+            <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
+            <span class="font-semibold">Optimize your plans</span>
+          </div>
+          <span class="text-sm text-muted-foreground"
+            >Switch Netflix to annual and save $24/year.</span
+          >
+        </div>
+        <div class="card insight-card p-4 flex flex-col gap-2">
+          <div class="flex items-center gap-2">
+            <i data-lucide="bell" class="w-5 h-5"></i>
+            <span class="font-semibold">Set renewal reminders</span>
+          </div>
+          <span class="text-sm text-muted-foreground"
+            >Get notified before your next renewal.</span
+          >
+        </div>
+      </div>
+    </section>
+
+    <script>
+      window.lucide && window.lucide.createIcons()
+    </script>
+  </body>
 </html>
