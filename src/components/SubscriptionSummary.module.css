@@ -221,7 +221,9 @@
   font-weight: 600;
   padding: 0.5rem 1.25rem;
   box-shadow: var(--shadow-xs);
-  transition: background 0.2s, box-shadow 0.2s;
+  transition:
+    background 0.2s,
+    box-shadow 0.2s;
   border: none;
   cursor: pointer;
   position: relative;

@@ -1,5 +1,8 @@
 import styles from './SubscriptionItem.module.css'
-import { formatCurrency, getNextExpectedDate } from '../utils/subscriptionAnalysis'
+import {
+  formatCurrency,
+  getNextExpectedDate,
+} from '../utils/subscriptionAnalysis'
 import type { SubscriptionPattern } from '../utils/subscriptionAnalysis'
 
 interface SubscriptionItemProps {
@@ -34,7 +37,7 @@ export function SubscriptionItem({
 
   // Generate logo URL using clearbit API
   const logoUrl = `https://logo.clearbit.com/${subscription.payeeName.toLowerCase().replace(/\s+/g, '')}.com`
-  
+
   return (
     <div
       className={`${styles.subscriptionItem} ${
@@ -46,8 +49,8 @@ export function SubscriptionItem({
     >
       {/* Company logo */}
       <div className={styles.logoContainer}>
-        <img 
-          src={logoUrl} 
+        <img
+          src={logoUrl}
           alt={`${subscription.payeeName} logo`}
           className={styles.logo}
           onError={(e) => {
@@ -68,10 +71,10 @@ export function SubscriptionItem({
       <div className={styles.content}>
         <div className={styles.header}>
           <div className={styles.nameSection}>
-            <span className={styles.name}>
-              {subscription.payeeName}
-            </span>
-            <span className={`${styles.confidenceBadge} ${getConfidenceClass()}`}>
+            <span className={styles.name}>{subscription.payeeName}</span>
+            <span
+              className={`${styles.confidenceBadge} ${getConfidenceClass()}`}
+            >
               {confidencePercent}%
             </span>
           </div>
@@ -79,12 +82,17 @@ export function SubscriptionItem({
         <div className={styles.details}>
           <div className={styles.price}>
             {formatCurrency(subscription.averageAmount, currencySymbol)}
-            <span className={styles.frequency}>/{frequencyDisplay.toLowerCase().slice(0, 2)}</span>
+            <span className={styles.frequency}>
+              /{frequencyDisplay.toLowerCase().slice(0, 2)}
+            </span>
           </div>
-          <div className={`${styles.nextDate} ${
-            isRenewalPast ? styles.nextDateOverdue : ''
-          }`}>
-            Next: {nextDate
+          <div
+            className={`${styles.nextDate} ${
+              isRenewalPast ? styles.nextDateOverdue : ''
+            }`}
+          >
+            Next:{' '}
+            {nextDate
               ? new Date(nextDate).toLocaleDateString('en-US', {
                   month: 'short',
                   day: 'numeric',
