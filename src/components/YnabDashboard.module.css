@@ -333,12 +333,14 @@
   background: var(--summary-card, oklch(0.26 0.01 240));
   color: var(--card-foreground, #f9fafb);
   border-radius: 1rem;
-  box-shadow: 0 2px 8px rgba(24, 26, 27, 0.10);
+  box-shadow: 0 2px 8px rgba(24, 26, 27, 0.1);
   padding: 1.25rem 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  transition: box-shadow 0.3s, transform 0.3s;
+  transition:
+    box-shadow 0.3s,
+    transform 0.3s;
 }
 
 .summaryCard:hover {
