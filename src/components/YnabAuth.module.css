@@ -1,0 +1,65 @@
+.ynabAuthButton {
+  display: inline-block;
+  padding: 0.75em 2em;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #fff;
+  background: #1a2b2e;
+  border: 2px solid #253a3e;
+  border-radius: 2em;
+  box-shadow: 0 2px 8px rgba(26, 43, 46, 0.12);
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    box-shadow 0.18s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.ynabAuthButton::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 2em;
+  border: 2px solid #3fc1c9;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 0.2s;
+  background: none;
+}
+
+.ynabAuthButton:hover::before,
+.ynabAuthButton:focus::before {
+  opacity: 1;
+  animation: borderMove 1.2s linear infinite;
+}
+
+@keyframes borderMove {
+  0% {
+    border-color: #3fc1c9;
+    box-shadow: 0 0 0 0 #3fc1c9;
+  }
+  50% {
+    border-color: #1a9cb7;
+    box-shadow: 0 0 8px 2px #3fc1c944;
+  }
+  100% {
+    border-color: #3fc1c9;
+    box-shadow: 0 0 0 0 #3fc1c9;
+  }
+}
+
+.ynabAuthButton:hover,
+.ynabAuthButton:focus {
+  border-color: #3fc1c9;
+  box-shadow: 0 4px 16px rgba(63, 193, 201, 0.18);
+}
+
+.ynabAuthButton:active {
+  box-shadow: 0 1px 4px rgba(26, 43, 46, 0.1);
+}

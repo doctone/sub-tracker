@@ -53,12 +53,12 @@
 }
 
 .summaryCard {
-  background: var(--popover);
+  background: var(--summary-card, oklch(0.26 0.01 240));
   border-radius: 0.5rem;
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: var(--foreground);
+  color: var(--primary-foreground);
 }
 
 .summaryValue {
@@ -277,6 +277,7 @@
   }
 
   .summaryCard {
+    background: var(--summary-card, oklch(0.26 0.01 240));
     font-size: 0.8rem;
     padding: 0.5rem 0.75rem;
   }
