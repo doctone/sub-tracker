@@ -1,0 +1,51 @@
+:root {
+  --background: oklch(0.98 0.01 100);
+  --foreground: oklch(0.18 0.01 100);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.18 0.01 100);
+  --primary: oklch(0.72 0.13 160); /* muted teal */
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.96 0.03 80); /* soft beige */
+  --secondary-foreground: oklch(0.18 0.01 100);
+  --muted: oklch(0.92 0.01 100);
+  --muted-foreground: oklch(0.4 0.01 100);
+  --accent: oklch(0.72 0.13 160);
+  --accent-foreground: oklch(1 0 0);
+  --destructive: oklch(0.65 0.18 30); /* muted red */
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.9 0.01 100);
+  --input: oklch(0.96 0.01 100);
+  --ring: oklch(0.72 0.13 160);
+  --font-sans: 'Inter', 'Roboto', 'Geist', sans-serif;
+  --radius: 0.5rem;
+  --shadow-2xs: 0 1px 2px 0 oklch(0.18 0.01 100 / 0.03);
+  --shadow-xs: 0 1px 3px 0 oklch(0.18 0.01 100 / 0.05);
+  --shadow-sm: 0 2px 4px 0 oklch(0.18 0.01 100 / 0.05);
+  --shadow: 0 2px 8px 0 oklch(0.18 0.01 100 / 0.08);
+  --shadow-md: 0 4px 12px 0 oklch(0.18 0.01 100 / 0.10);
+  --shadow-lg: 0 8px 24px 0 oklch(0.18 0.01 100 / 0.12);
+  --shadow-xl: 0 12px 32px 0 oklch(0.18 0.01 100 / 0.14);
+  --shadow-2xl: 0 16px 48px 0 oklch(0.18 0.01 100 / 0.16);
+  --tracking-normal: 0em;
+  --spacing: 0.25rem;
+}
+
+body.dark-mode {
+  --background: oklch(0.18 0.01 100);
+  --foreground: oklch(0.98 0.01 100);
+  --card: oklch(0.22 0.01 100);
+  --card-foreground: oklch(0.98 0.01 100);
+  --primary: oklch(0.72 0.13 160);
+  --primary-foreground: oklch(0.18 0.01 100);
+  --secondary: oklch(0.28 0.03 80);
+  --secondary-foreground: oklch(0.98 0.01 100);
+  --muted: oklch(0.24 0.01 100);
+  --muted-foreground: oklch(0.7 0.01 100);
+  --accent: oklch(0.72 0.13 160);
+  --accent-foreground: oklch(0.18 0.01 100);
+  --destructive: oklch(0.65 0.18 30);
+  --destructive-foreground: oklch(0.98 0.01 100);
+  --border: oklch(0.28 0.01 100);
+  --input: oklch(0.22 0.01 100);
+  --ring: oklch(0.72 0.13 160);
+}

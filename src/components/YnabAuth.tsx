@@ -1,3 +1,5 @@
+import styles from './YnabAuth.module.css'
+
 export function YnabAuth() {
   const clientId = import.meta.env.VITE_YNAB_CLIENT_ID
   const redirectUri =
@@ -5,6 +7,7 @@ export function YnabAuth() {
 
   return (
     <a
+      className={styles.ynabAuthButton}
       href={`https://app.ynab.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token`}
     >
       Authenticate with YNAB{' '}
