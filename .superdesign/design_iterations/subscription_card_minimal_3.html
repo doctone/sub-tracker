@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Subscription Card Minimal (Adobe)</title>
+  <link rel="stylesheet" href="../design_iterations/subscriptions_theme_dark.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:400,600,700&display=swap" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    .card-minimal {
+      position: relative;
+      background: var(--card);
+      color: var(--card-foreground);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border);
+      padding: 1.5rem 1.5rem 1.25rem 1.5rem;
+      overflow: hidden;
+      min-height: 120px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      transition: box-shadow 0.2s;
+    }
+    .card-minimal:hover {
+      box-shadow: var(--shadow-md);
+    }
+    .logo-bg {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 72px;
+      height: 72px;
+      opacity: 0.08;
+      z-index: 0;
+      filter: grayscale(1) contrast(1.2);
+      pointer-events: none;
+    }
+    .card-content {
+      position: relative;
+      z-index: 1;
+    }
+    .ghost-btn {
+      background: transparent;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+      border-radius: var(--radius-md);
+      padding: 0.4rem 1.1rem;
+      font-weight: 600;
+      margin-top: 1.1rem;
+      transition: background 0.18s, color 0.18s, border 0.18s;
+      cursor: pointer;
+    }
+    .ghost-btn:hover {
+      background: var(--primary);
+      color: var(--primary-foreground);
+      border-color: var(--primary);
+    }
+  </style>
+</head>
+<body class="bg-[oklch(0.15_0_0)] flex items-center justify-center min-h-screen">
+  <div class="card-minimal w-full max-w-sm">
+    <img src="https://logo.clearbit.com/adobe.com" alt="Adobe" class="logo-bg rounded-lg" />
+    <div class="card-content">
+      <div class="flex items-center gap-2 mb-1">
+        <span class="text-xl font-bold">Adobe CC</span>
+        <span class="text-xs bg-[oklch(0.28_0.04_120)] text-[oklch(0.98_0_0)] rounded px-2 py-0.5 ml-1">All Apps</span>
+      </div>
+      <div class="text-base font-medium mb-1">$52.99/mo</div>
+      <div class="text-sm text-[oklch(0.65_0_0)]">Next: Jul 18, 2024</div>
+      <button class="ghost-btn mt-4 flex items-center gap-1"><i data-lucide="settings"></i> Manage</button>
+    </div>
+  </div>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

@@ -1,6 +1,6 @@
+import styles from './SubscriptionSummary.module.css'
 import { formatCurrency } from '../utils/subscriptionAnalysis'
 import type { SubscriptionPattern } from '../utils/subscriptionAnalysis'
-import styles from './SubscriptionSummary.module.css'
 
 interface SubscriptionSummaryProps {
   subscriptions: SubscriptionPattern[]
@@ -15,10 +15,20 @@ export function SubscriptionSummary({
 }: SubscriptionSummaryProps) {
   if (subscriptions.length === 0) {
     return (
-      <div className={styles.empty}>
-        No subscription patterns found. Try adding more historical data by
-        increasing the analysis period.
-      </div>
+      <main className={styles.container}>
+        <section className={styles.emptyState}>
+          <svg className={styles.illustration} width="96" height="96" fill="none" viewBox="0 0 96 96">
+            <rect width="96" height="96" rx="20" fill="#23232B"/>
+            <rect x="20" y="36" width="56" height="32" rx="6" fill="#353545"/>
+            <rect x="28" y="44" width="40" height="8" rx="2" fill="#44445A"/>
+            <rect x="28" y="56" width="24" height="4" rx="2" fill="#44445A"/>
+          </svg>
+          <div className={styles.emptyTitle}>No subscriptions found.</div>
+          <div className={styles.emptyText}>
+            No subscription patterns found. Try adding more historical data by increasing the analysis period.
+          </div>
+        </section>
+      </main>
     )
   }
 
@@ -54,75 +64,115 @@ export function SubscriptionSummary({
     .slice(0, 3)
 
   return (
-    <div className={styles.summary}>
-      <h2 className={styles.title}>Subscription Overview</h2>
+    <main className={styles.container}>
+      {/* Header */}
+      <header className={styles.header}>
+        <h1 className={styles.title}>Your Subscriptions</h1>
+      </header>
+      
+      {/* Summary Cards */}
+      <section className={styles.summarySection}>
+        <div className={styles.summaryCards}>
+          <div className={styles.summaryCard}>
+            <span className={styles.summaryValue}>{totalSubscriptions}</span> subscriptions
+          </div>
+          <div className={styles.summaryCard}>
+            <span className={styles.summaryValue}>{formatCurrency(monthlyTotal, currencySymbol)}</span> / month
+          </div>
+          <div className={styles.summaryCard}>
+            <span className={styles.summaryValue}>{Math.round(averageConfidence * 100)}%</span> avg confidence
+          </div>
+        </div>
+      </section>
 
-      <div className={styles.content}>
-        <div className={styles.section}>
-          <h3 className={styles.sectionTitle}>Your Subscription Spending</h3>
-          <p className={styles.text}>
-            <strong>{totalSubscriptions}</strong> subscription patterns found
-          </p>
-          <p className={styles.text}>
-            <strong>{highConfidenceCount}</strong> high-confidence subscriptions
-          </p>
-          <p className={styles.text}>
-            <strong>{formatCurrency(monthlyTotal, currencySymbol)}</strong> per
-            month
-          </p>
-          <p className={styles.text}>
-            <strong>{formatCurrency(yearlyTotal, currencySymbol)}</strong>{' '}
-            annually
-          </p>
+      {/* Detailed Overview Cards */}
+      <section className={styles.detailSection}>
+        <div className={styles.detailCard}>
+          <h3 className={styles.detailCardTitle}>Spending Overview</h3>
+          <div className={styles.spendingGrid}>
+            <div>
+              <div className={styles.metricLabel}>Monthly Total</div>
+              <div className={styles.metricValue}>
+                {formatCurrency(monthlyTotal, currencySymbol)}
+              </div>
+            </div>
+            <div>
+              <div className={styles.metricLabel}>Annual Total</div>
+              <div className={styles.metricValue}>
+                {formatCurrency(yearlyTotal, currencySymbol)}
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div className={styles.section}>
-          <h3 className={styles.sectionTitle}>Detection Confidence</h3>
-          <p className={styles.text}>
-            Our analysis has an average confidence of{' '}
-            <strong>{Math.round(averageConfidence * 100)}%</strong>.
-          </p>
-          <p className={styles.text}>
-            • <strong>{highConfidenceCount}</strong> highly confident
-            subscriptions ({'>'}80%)
-          </p>
-          {mediumConfidenceCount > 0 && (
-            <p className={styles.text}>
-              • <strong>{mediumConfidenceCount}</strong> moderately confident
-              (60-80%)
-            </p>
-          )}
-          {lowConfidenceCount > 0 && (
-            <p className={styles.text}>
-              • <strong>{lowConfidenceCount}</strong> potential patterns that
-              need review
-            </p>
-          )}
+        <div className={styles.detailCard}>
+          <h3 className={styles.detailCardTitle}>Detection Confidence</h3>
+          <div className={styles.confidenceList}>
+            <div className={styles.confidenceItem}>
+              <span className={styles.confidenceLabel}>High confidence ({'>'} 80%)</span>
+              <div className={styles.confidenceValue}>
+                <span className={styles.confidenceCount}>{highConfidenceCount}</span>
+                <div className={`${styles.confidenceDot} ${styles.confidenceDotHigh}`}></div>
+              </div>
+            </div>
+            {mediumConfidenceCount > 0 && (
+              <div className={styles.confidenceItem}>
+                <span className={styles.confidenceLabel}>Medium confidence (60-80%)</span>
+                <div className={styles.confidenceValue}>
+                  <span className={styles.confidenceCount}>{mediumConfidenceCount}</span>
+                  <div className={`${styles.confidenceDot} ${styles.confidenceDotMedium}`}></div>
+                </div>
+              </div>
+            )}
+            {lowConfidenceCount > 0 && (
+              <div className={styles.confidenceItem}>
+                <span className={styles.confidenceLabel}>Needs review ({'<'} 60%)</span>
+                <div className={styles.confidenceValue}>
+                  <span className={styles.confidenceCount}>{lowConfidenceCount}</span>
+                  <div className={`${styles.confidenceDot} ${styles.confidenceDotLow}`}></div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         {topSubscriptions.length > 0 && (
-          <div className={styles.section}>
-            <h3 className={styles.sectionTitle}>Largest Subscriptions</h3>
-            {topSubscriptions.map((sub) => (
-              <p key={sub.payeeName} className={styles.text}>
-                • <strong>{sub.payeeName}</strong> -{' '}
-                {formatCurrency(sub.averageAmount, currencySymbol)}{' '}
-                {sub.frequency}
-              </p>
-            ))}
+          <div className={styles.detailCard}>
+            <h3 className={styles.detailCardTitle}>Largest Subscriptions</h3>
+            <div className={styles.topSubscriptionsList}>
+              {topSubscriptions.map((sub) => (
+                <div key={sub.payeeName} className={styles.topSubscriptionItem}>
+                  <div className={styles.topSubscriptionInfo}>
+                    <div className={styles.topSubscriptionAvatar}>
+                      <span className={styles.topSubscriptionAvatarText}>
+                        {sub.payeeName.charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+                    <div>
+                      <div className={styles.topSubscriptionName}>{sub.payeeName}</div>
+                      <div className={styles.topSubscriptionFrequency}>{sub.frequency}</div>
+                    </div>
+                  </div>
+                  <div className={styles.topSubscriptionAmount}>
+                    {formatCurrency(sub.averageAmount, currencySymbol)}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
+      </section>
 
-        <div className={styles.actions}>
-          <button
-            className={styles.toggle}
-            onClick={onToggleDetailed}
-            disabled={!onToggleDetailed}
-          >
-            View Detailed List
-          </button>
-        </div>
+      {/* Actions */}
+      <div className={styles.actions}>
+        <button
+          className={styles.primaryButton}
+          onClick={onToggleDetailed}
+          disabled={!onToggleDetailed}
+        >
+          View Detailed List
+        </button>
       </div>
-    </div>
+    </main>
   )
 }
