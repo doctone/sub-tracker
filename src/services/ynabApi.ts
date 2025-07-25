@@ -4,13 +4,15 @@ import type {
 } from '../types/ynab'
 
 export class YnabApiClient {
-  private baseUrl = '/api/ynab'
+  private baseUrl: string
   private accessToken: string
   private lastRequestTime = 0
   private readonly minRequestInterval = 200 // 200ms between requests
 
   constructor(accessToken: string) {
     this.accessToken = accessToken
+    // Use proxy in development, direct API calls in production
+    this.baseUrl = import.meta.env.DEV ? '/api/ynab' : 'https://api.ynab.com/v1'
   }
 
   private async request<T>(endpoint: string): Promise<T> {
