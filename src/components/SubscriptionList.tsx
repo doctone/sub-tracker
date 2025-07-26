@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import styles from './SubscriptionList.module.css'
 import type { SubscriptionPattern } from '../utils/subscriptionAnalysis'
+import { getNextExpectedDate } from '../utils/subscriptionAnalysis'
 import { SubscriptionItem } from './SubscriptionItem'
 
 interface SubscriptionListProps {
@@ -13,6 +15,20 @@ export function SubscriptionList({
   currencySymbol,
   transactionCount,
 }: SubscriptionListProps) {
+  const [showOnlyFuture, setShowOnlyFuture] = useState(true)
+
+  const handleToggle = () => {
+    setShowOnlyFuture(!showOnlyFuture)
+  }
+
+  const filteredSubscriptions = showOnlyFuture
+    ? subscriptions.filter((sub) => {
+        const nextDate = getNextExpectedDate(sub)
+        if (!nextDate) return false
+        return new Date(nextDate) > new Date()
+      })
+    : subscriptions
+
   if (subscriptions.length === 0) {
     return (
       <main className={styles.container}>
@@ -54,10 +70,22 @@ export function SubscriptionList({
           <span className={styles.analysisValue}>{transactionCount}</span>{' '}
           transactions analysed
         </div>
+        <div className={styles.toggleContainer}>
+          <label className={styles.toggleLabel}>
+            <input
+              type="checkbox"
+              checked={showOnlyFuture}
+              onChange={handleToggle}
+              className={styles.toggleCheckbox}
+            />
+            <span className={styles.toggleSlider} />
+            Show only upcoming renewals
+          </label>
+        </div>
       </div>
 
       <section className={styles.subscriptionsList}>
-        {subscriptions.map((subscription, index) => (
+        {filteredSubscriptions.map((subscription, index) => (
           <SubscriptionItem
             key={`${subscription.payeeName}-${index}`}
             subscription={subscription}

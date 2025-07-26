@@ -14,6 +14,62 @@
 .analysisInfo {
   margin-bottom: 0.5rem;
   padding: 1.25rem 1.5rem 0.5rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* Added to ensure responsiveness */
+  gap: 1rem; /* Added for spacing between items */
+}
+
+.toggleContainer {
+  display: flex;
+  align-items: center;
+}
+
+.toggleLabel {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 0.875rem; /* Changed from 0.9rem to match analysisCard */
+  font-weight: 500; /* Added to match analysisCard */
+  color: var(--muted-foreground, #b0b3c6);
+}
+
+.toggleCheckbox {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggleSlider {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 20px;
+  background-color: var(--border, #353545);
+  border-radius: 10px;
+  transition: background-color 0.2s;
+  margin-right: 0.75rem;
+}
+
+.toggleSlider::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.2s;
+}
+
+.toggleCheckbox:checked + .toggleSlider {
+  background-color: var(--primary, #4f46e5);
+}
+
+.toggleCheckbox:checked + .toggleSlider::before {
+  transform: translateX(16px);
 }
 
 .analysisCard {
@@ -24,6 +80,57 @@
   font-weight: 500;
   display: inline-block;
   color: var(--foreground, #f9fafb);
+}
+
+.toggleContainer {
+  display: flex;
+  align-items: center;
+}
+
+.toggleLabel {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 0.875rem; /* Changed from 0.9rem to match analysisCard */
+  font-weight: 500; /* Added to match analysisCard */
+  color: var(--muted-foreground, #b0b3c6);
+}
+
+.toggleCheckbox {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggleSlider {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 20px;
+  background-color: var(--border, #353545);
+  border-radius: 10px;
+  transition: background-color 0.2s;
+  margin-right: 0.75rem;
+}
+
+.toggleSlider::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.2s;
+}
+
+.toggleCheckbox:checked + .toggleSlider {
+  background-color: var(--primary, #4f46e5);
+}
+
+.toggleCheckbox:checked + .toggleSlider::before {
+  transform: translateX(16px);
 }
 
 .analysisValue {
