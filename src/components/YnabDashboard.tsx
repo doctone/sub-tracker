@@ -55,8 +55,18 @@ export function YnabDashboard() {
 
   // Calculate summary card values
   const currencySymbol = selectedBudget?.currency_format.currency_symbol || '$'
-  const highConfidenceSubs = subscriptions.filter((sub) => sub.confidence > 0.7)
-  const monthlySpend = highConfidenceSubs.reduce((sum, sub) => {
+  const now = new Date()
+  const threeMonthsAgo = new Date(
+    now.getFullYear(),
+    now.getMonth() - 3,
+    now.getDate()
+  )
+  const highConfidenceRecentSubs = subscriptions.filter(
+    (sub) =>
+      sub.confidence > 0.7 &&
+      new Date(sub.lastTransactionDate) >= threeMonthsAgo
+  )
+  const monthlySpend = highConfidenceRecentSubs.reduce((sum, sub) => {
     if (sub.frequency === 'monthly') return sum + sub.averageAmount
     if (sub.frequency === 'yearly') return sum + sub.averageAmount / 12
     if (sub.frequency === 'weekly') return sum + sub.averageAmount * 4.33
@@ -163,11 +173,15 @@ export function YnabDashboard() {
           </section>
 
           <div className={styles.spaceY6}>
-            <SubscriptionList
-              subscriptions={subscriptions}
-              currencySymbol={selectedBudget.currency_format.currency_symbol}
-              transactionCount={transactions.length}
-            />
+            {loading ? (
+              <div className={styles.loading}>Loading subscription data...</div>
+            ) : (
+              <SubscriptionList
+                subscriptions={subscriptions}
+                currencySymbol={selectedBudget.currency_format.currency_symbol}
+                transactionCount={transactions.length}
+              />
+            )}
           </div>
         </div>
       )}
