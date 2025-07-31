@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Subscriptions Table</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Inter:400,500,600&display=swap"
+    />
+    <link rel="stylesheet" href="table_theme_1.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.0.0/dist/flowbite.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <style>
+      .fade-in {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      }
+      @keyframes fadeInUp {
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      .row-hover {
+        transition:
+          background 0.12s,
+          box-shadow 0.12s;
+      }
+      .row-hover:hover {
+        background: var(--muted) !important;
+        box-shadow: var(--shadow-xs) !important;
+      }
+      .toggle-switch {
+        transition: background 0.15s;
+      }
+      .toggle-thumb {
+        transition: transform 0.15s;
+      }
+      .empty-state {
+        opacity: 0;
+        transform: translateY(10px);
+        animation: fadeInUp 0.3s 0.1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      }
+      .btn-anim {
+        transition:
+          background 0.15s,
+          transform 0.12s;
+      }
+      .btn-anim:active {
+        transform: scale(0.96);
+      }
+      .btn-anim:hover {
+        background: var(--accent) !important;
+      }
+    </style>
+  </head>
+  <body
+    class="min-h-screen flex flex-col items-center py-10 px-2 bg-[var(--background)] text-[var(--foreground)]"
+  >
+    <div class="w-full max-w-4xl">
+      <!-- Header -->
+      <div class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl font-semibold">Subscriptions</h1>
+        <button
+          class="btn-anim px-4 py-2 rounded-md text-sm font-medium flex items-center gap-2"
+        >
+          <i data-lucide="plus" class="w-4 h-4"></i> New Subscription
+        </button>
+      </div>
+      <!-- Filters -->
+      <div class="flex flex-wrap gap-3 items-center mb-6 fade-in">
+        <select class="min-w-[120px]" id="month-filter">
+          <option>January</option>
+          <option>February</option>
+          <option>March</option>
+          <option>April</option>
+          <option>May</option>
+          <option>June</option>
+          <option>July</option>
+          <option>August</option>
+          <option>September</option>
+          <option>October</option>
+          <option>November</option>
+          <option>December</option>
+        </select>
+        <select class="min-w-[100px]" id="year-filter">
+          <option>2024</option>
+          <option>2023</option>
+          <option>2022</option>
+        </select>
+        <!-- Toggle Switch -->
+        <div class="flex items-center gap-2">
+          <span class="text-sm">Show:</span>
+          <div class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="future-toggle" class="sr-only peer" />
+            <div
+              class="w-16 h-7 bg-[var(--muted)] rounded-full peer peer-checked:bg-[var(--primary)] toggle-switch"
+            ></div>
+            <span
+              class="absolute left-1 top-1 w-5 h-5 bg-white rounded-full shadow toggle-thumb peer-checked:translate-x-9 transition-transform"
+            ></span>
+            <span
+              class="absolute left-3 top-1 text-xs font-medium text-[var(--muted-foreground)] select-none"
+              >Past</span
+            >
+            <span
+              class="absolute right-3 top-1 text-xs font-medium text-[var(--primary-foreground)] select-none peer-checked:text-white"
+              >Future</span
+            >
+          </div>
+        </div>
+      </div>
+      <!-- Table -->
+      <div class="overflow-x-auto fade-in">
+        <table class="w-full text-sm">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Amount</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="row-hover">
+              <td class="font-medium">Netflix</td>
+              <td>$12.99</td>
+              <td>2024-07-01</td>
+              <td>
+                <span
+                  class="inline-block px-2 py-1 rounded bg-[var(--primary)] text-white text-xs"
+                  >Future</span
+                >
+              </td>
+              <td>
+                <button class="btn-anim p-2 rounded-md" title="Edit">
+                  <i data-lucide="edit-3" class="w-4 h-4"></i>
+                </button>
+                <button class="btn-anim p-2 rounded-md" title="Delete">
+                  <i data-lucide="trash-2" class="w-4 h-4"></i>
+                </button>
+              </td>
+            </tr>
+            <tr class="row-hover">
+              <td class="font-medium">Spotify</td>
+              <td>$9.99</td>
+              <td>2024-05-01</td>
+              <td>
+                <span
+                  class="inline-block px-2 py-1 rounded bg-[var(--muted)] text-[var(--muted-foreground)] text-xs"
+                  >Past</span
+                >
+              </td>
+              <td>
+                <button class="btn-anim p-2 rounded-md" title="Edit">
+                  <i data-lucide="edit-3" class="w-4 h-4"></i>
+                </button>
+                <button class="btn-anim p-2 rounded-md" title="Delete">
+                  <i data-lucide="trash-2" class="w-4 h-4"></i>
+                </button>
+              </td>
+            </tr>
+            <!-- Example empty state row, hidden by default -->
+            <tr class="empty-state" style="display: none">
+              <td
+                colspan="5"
+                class="text-center py-8 text-[var(--muted-foreground)]"
+              >
+                <i data-lucide="calendar-x" class="w-8 h-8 mx-auto mb-2"></i>
+                <div>No subscriptions for this filter</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <script>
+      lucide.createIcons()
+      // Example: Show empty state if no rows
+      // document.querySelector('.empty-state').style.display = '';
+    </script>
+  </body>
+</html>
